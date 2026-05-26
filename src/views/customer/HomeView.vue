@@ -13,6 +13,7 @@ import {
   QrCode,
   ShieldCheck,
   ShoppingBag,
+  ShoppingCart,
   Sparkles,
   Ticket,
   Wrench,
@@ -29,6 +30,7 @@ import { dateTime, money, normalizeList } from '@/utils/format'
 import { getOrderTimelineCurrentLabel } from '@/utils/orderFulfillment'
 import { statusLabel } from '@/utils/status'
 import { normalizeCoupon, normalizeMembership, normalizeReward, unwrapList } from '@/utils/membershipRewards'
+import { externalLinks } from '@/config/externalLinks'
 import type { ApiRecord, Coupon, NewsItem, Order, Product, Reward, ServiceItem, Vehicle, Warranty } from '@/types/backend'
 
 import banner1 from '@/assets/banners/banner-1.jpg'
@@ -154,10 +156,10 @@ const quickActions = computed(() => [
 ])
 
 const contacts = [
-  { label: '地圖導航', href: 'https://maps.app.goo.gl/xHHAESHvXrCZSRsU9', icon: MapPinned },
-  { label: '客服電話', href: 'tel:0800300018', icon: Wrench },
-  { label: 'LINE 客服', href: 'https://line.me/R/ti/p/@hsc5602h', icon: MessageCircle },
-  { label: 'YouTube', href: 'https://www.youtube.com/@doker2018', icon: PlayCircle },
+  { label: '地圖導航', href: externalLinks.map.href, icon: MapPinned },
+  { label: '客服電話', href: externalLinks.supportPhone.href, icon: Wrench },
+  { label: 'LINE 客服', href: externalLinks.line.href, icon: MessageCircle },
+  { label: 'YouTube', href: externalLinks.youtube.href, icon: PlayCircle },
 ]
 
 const extractVideos = (payload: unknown): VideoItem[] => {
@@ -248,15 +250,17 @@ onBeforeUnmount(() => {
 
 <template>
   <div class="space-y-8">
+    <Transition name="banner-fade" mode="out-in">
     <section
       v-if="currentBanner"
+      :key="currentBanner.id"
       class="relative overflow-hidden rounded-[2rem] border border-white/10 bg-panel shadow-premium"
     >
       <div class="absolute inset-0 bg-gradient-to-br" :class="currentBanner.tone" />
       <img
         :src="currentBanner.assetImage"
         :alt="currentBanner.title"
-        class="absolute inset-0 h-full w-full scale-[1.01] object-cover opacity-95"
+        class="hero-image-motion absolute inset-0 h-full w-full scale-[1.01] object-cover opacity-95"
       />
       <div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,15,28,.76),rgba(8,15,28,.34)_38%,rgba(8,15,28,.06)_70%,rgba(8,15,28,.02))]" />
       <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-200/70 to-transparent" />
@@ -309,7 +313,7 @@ onBeforeUnmount(() => {
             v-for="(_, index) in banners"
             :key="index"
             class="h-2.5 rounded-full transition-all"
-            :class="index === activeBanner ? 'w-10 bg-gradient-to-r from-amber-400 to-yellow-500 shadow-lg shadow-amber-400/30' : 'w-2.5 bg-white/70'"
+            :class="index === activeBanner ? 'w-10 scale-105 bg-gradient-to-r from-amber-400 to-yellow-500 shadow-lg shadow-amber-400/30' : 'w-2.5 bg-white/70 hover:bg-white'"
             type="button"
             @click="activeBanner = index"
           />
@@ -325,8 +329,9 @@ onBeforeUnmount(() => {
         </div>
       </div>
     </section>
+    </Transition>
 
-    <section class="relative overflow-hidden rounded-[2rem] border border-line bg-[radial-gradient(circle_at_20%_10%,rgba(210,164,90,.18),transparent_32%),linear-gradient(135deg,rgba(19,32,51,.94),rgba(18,37,59,.88)_52%,rgba(16,27,44,.94))] p-5 shadow-premium sm:p-8">
+    <section v-reveal class="relative overflow-hidden rounded-[2rem] border border-line bg-[radial-gradient(circle_at_20%_10%,rgba(210,164,90,.18),transparent_32%),linear-gradient(135deg,rgba(19,32,51,.94),rgba(18,37,59,.88)_52%,rgba(16,27,44,.94))] p-5 shadow-premium sm:p-8">
       <div class="absolute right-8 top-8 hidden h-56 w-56 rounded-full bg-sky-400/10 blur-3xl lg:block" />
 
       <div class="relative grid gap-8 xl:grid-cols-[1.2fr_.8fr] xl:items-end">
@@ -360,8 +365,8 @@ onBeforeUnmount(() => {
 
     <PageState :loading="loading" :error="error" :empty="false">
       <div class="grid gap-6 xl:grid-cols-[1.25fr_.75fr]">
-        <SectionCard title="快速入口" subtitle="依照行動 App 首頁邏輯整理最常用的會員動作。">
-          <div class="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        <SectionCard v-reveal title="快速入口" subtitle="依照行動 App 首頁邏輯整理最常用的會員動作。">
+          <div class="stagger-children grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             <RouterLink
               v-for="item in quickActions"
               :key="item.to"
@@ -377,7 +382,7 @@ onBeforeUnmount(() => {
           </div>
         </SectionCard>
 
-        <SectionCard title="保固生命週期" subtitle="依據訂單完成與保固啟用狀態呈現。">
+        <SectionCard v-reveal title="保固生命週期" subtitle="依據訂單完成與保固啟用狀態呈現。">
           <TimelineRail
             :steps="[
               { key: 'order', label: '建立安裝或商品訂單', state: orders.length ? 'completed' : 'pending' },
@@ -389,7 +394,7 @@ onBeforeUnmount(() => {
       </div>
 
       <div class="grid gap-6 xl:grid-cols-[.9fr_1.1fr]">
-        <SectionCard title="最新訂單" subtitle="同步訂單狀態、履約流程與付款總額。">
+        <SectionCard v-reveal title="最新訂單" subtitle="同步訂單狀態、履約流程與付款總額。">
           <div v-if="orders.length" class="space-y-3">
             <RouterLink v-for="order in orders.slice(0, 4)" :key="order.id" :to="`/orders/${order.id}`" class="glass-card block">
               <div class="flex items-center justify-between gap-4">
@@ -411,7 +416,7 @@ onBeforeUnmount(() => {
           </p>
         </SectionCard>
 
-        <SectionCard title="推薦商品與服務" subtitle="使用後端商品、分類、庫存與保固欄位呈現。">
+        <SectionCard v-reveal title="推薦商品與服務" subtitle="使用後端商品、分類、庫存與保固欄位呈現。">
           <div v-if="products.length" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <RouterLink
               v-for="product in products"
@@ -483,7 +488,32 @@ onBeforeUnmount(() => {
         </SectionCard>
       </div>
 
-      <SectionCard title="聯絡我們" subtitle="保留行動 App 首頁的地圖、電話、LINE 與 YouTube 快捷入口。">
+      <section v-reveal class="relative overflow-hidden rounded-[2rem] border border-orange-300/20 bg-[radial-gradient(circle_at_12%_0%,rgba(238,114,45,.18),transparent_30%),linear-gradient(135deg,rgba(19,32,51,.92),rgba(18,37,59,.82))] p-5 shadow-premium sm:p-7">
+        <div class="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+          <div class="flex items-start gap-4">
+            <div class="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-orange-300/25 bg-orange-400/12 text-orange-200">
+              <ShoppingCart class="h-7 w-7" />
+            </div>
+            <div>
+              <p class="label text-orange-200">官方購物平台</p>
+              <h2 class="mt-2 text-2xl font-black text-slate-100">官方蝦皮商城</h2>
+              <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
+                偏好蝦皮結帳、物流或平台優惠時，可前往 DOKER 官方蝦皮商城查看更多商品並線上快速下單。
+              </p>
+              <div v-if="products.length" class="mt-4 flex flex-wrap gap-2">
+                <span v-for="product in products.slice(0, 3)" :key="product.id" class="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs text-slate-300">
+                  {{ product.name }}
+                </span>
+              </div>
+            </div>
+          </div>
+          <a class="btn-primary" :href="externalLinks.shopee.href" target="_blank" rel="noreferrer">
+            前往蝦皮商城
+          </a>
+        </div>
+      </section>
+
+      <SectionCard v-reveal title="聯絡我們" subtitle="保留行動 App 首頁的地圖、電話、LINE 與 YouTube 快捷入口。">
         <div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           <a
             v-for="contact in contacts"

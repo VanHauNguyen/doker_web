@@ -66,7 +66,7 @@ textarea {
   }
 
   .btn {
-    @apply inline-flex min-h-10 items-center justify-center gap-2 rounded-lg px-4 py-2 text-sm font-semibold transition duration-200 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply relative inline-flex min-h-10 items-center justify-center gap-2 overflow-hidden rounded-lg px-4 py-2 text-sm font-semibold transition duration-200 disabled:cursor-not-allowed disabled:opacity-50;
   }
 
   .btn-primary {
@@ -100,11 +100,11 @@ textarea {
   }
 
   .glass-card {
-    @apply rounded-xl border border-line bg-white/[0.075] p-4 transition duration-200 hover:border-amber-300/25 hover:bg-white/[0.11];
+    @apply rounded-xl border border-line bg-white/[0.075] p-4 transition duration-200 hover:-translate-y-0.5 hover:border-amber-300/25 hover:bg-white/[0.11];
   }
 
   .table-row {
-    @apply transition hover:bg-white/[0.055];
+    @apply transition duration-200 hover:bg-white/[0.055];
   }
 
   .focus-ring {
@@ -197,4 +197,180 @@ pre {
 .bg-accent.text-ink,
 .bg-accent .text-ink {
   color: #0d1728;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.975);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes progress-in {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes hero-drift {
+  from {
+    transform: scale(1.01) translateX(0);
+  }
+  to {
+    transform: scale(1.045) translateX(-10px);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.animate-scale-in {
+  animation: scale-in 380ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.hover-lift {
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 55px rgba(3, 8, 18, 0.28);
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after,
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-120%);
+  background: linear-gradient(110deg, transparent, rgba(255, 255, 255, 0.28), transparent);
+  pointer-events: none;
+}
+
+.shimmer::after {
+  animation: shimmer 1.8s ease-in-out infinite;
+}
+
+.btn-primary:hover::after {
+  animation: shimmer 900ms ease-in-out;
+}
+
+.stagger-children > * {
+  animation: fade-up 520ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.stagger-children > *:nth-child(2) { animation-delay: 70ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 140ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 210ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 280ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 350ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 420ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 490ms; }
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 520ms cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 520ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.progress-animate {
+  transform-origin: left center;
+  animation: progress-in 720ms cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+
+.hero-image-motion {
+  animation: hero-drift 7s ease-in-out alternate infinite;
+}
+
+.page-fade-enter-active,
+.page-fade-leave-active,
+.banner-fade-enter-active,
+.banner-fade-leave-active,
+.result-fade-enter-active,
+.result-fade-leave-active {
+  transition:
+    opacity 240ms ease,
+    transform 240ms ease;
+}
+
+.page-fade-enter-from,
+.page-fade-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.banner-fade-enter-from,
+.banner-fade-leave-to {
+  opacity: 0;
+  transform: translateX(14px) scale(0.99);
+}
+
+.result-fade-enter-from,
+.result-fade-leave-to {
+  opacity: 0;
+  transform: translateY(8px) scale(0.99);
+}
+
+.copy-pop {
+  animation: scale-in 220ms ease both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+  }
+
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+  }
 }

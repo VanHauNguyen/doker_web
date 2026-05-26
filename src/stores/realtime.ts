@@ -36,5 +36,12 @@ export const useRealtimeStore = defineStore('realtime', () => {
     if (notification) notification.isRead = true
   }
 
-  return { notifications, unread, refreshNotifications, connect, disconnect, markRead }
+  const markAllRead = async (): Promise<void> => {
+    const ids = notifications.value.filter((item) => !item.isRead).map((item) => item.id)
+    await notificationsApi.markAllRead(ids)
+    notifications.value = notifications.value.map((item) => ({ ...item, isRead: true }))
+    unread.value = 0
+  }
+
+  return { notifications, unread, refreshNotifications, connect, disconnect, markRead, markAllRead }
 })

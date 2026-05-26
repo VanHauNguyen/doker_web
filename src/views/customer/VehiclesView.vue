@@ -5,6 +5,7 @@ import PageHeader from '@/components/PageHeader.vue'
 import PageState from '@/components/PageState.vue'
 import FieldGrid from '@/components/FieldGrid.vue'
 import UploadButton from '@/components/UploadButton.vue'
+import { getVehicleCoverImage, vehicleDisplayName } from '@/utils/vehicleImage'
 import type { Vehicle } from '@/types/backend'
 
 const vehicles = ref<Vehicle[]>([])
@@ -63,7 +64,14 @@ onMounted(load)
     <PageState :loading="loading" :error="error" :empty="!vehicles.length" empty-title="尚未建立愛車資料" empty-detail="新增車輛後，可用於安裝商品與保固流程。">
     <div class="grid gap-4 lg:grid-cols-3">
       <article v-for="vehicle in vehicles" :key="vehicle.id" class="surface rounded-lg p-4">
-        <img v-if="vehicle.imageUrl" :src="vehicle.imageUrl" :alt="vehicle.plate" class="mb-4 h-36 w-full rounded-md object-cover" />
+        <div class="group mb-4 h-40 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-800 to-slate-950">
+          <img v-if="getVehicleCoverImage({ vehicle })" :src="getVehicleCoverImage({ vehicle }) ?? undefined" :alt="vehicle.plate" class="h-full w-full object-cover opacity-0 transition duration-500" @load="($event.target as HTMLElement).classList.remove('opacity-0')" />
+          <div v-else class="grid h-full place-items-center text-center">
+            <p class="text-3xl font-black text-slate-600">{{ vehicle.plate?.slice(0, 2) ?? 'DK' }}</p>
+            <p class="mt-2 text-xs font-bold text-slate-500">尚未上傳車輛照片</p>
+          </div>
+        </div>
+        <p class="mb-3 text-lg font-black text-white">{{ vehicleDisplayName(vehicle) }}</p>
         <FieldGrid :items="[
           { label: '車牌', value: vehicle.plate },
           { label: '品牌 / 車型', value: `${vehicle.brand ?? '-'} ${vehicle.model ?? ''}` },

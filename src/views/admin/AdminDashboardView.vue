@@ -124,7 +124,7 @@ onMounted(load)
 
 <template>
   <div class="space-y-6">
-    <section class="relative overflow-hidden rounded-[2rem] border border-line bg-[radial-gradient(circle_at_12%_0%,rgba(210,164,90,.20),transparent_34%),linear-gradient(135deg,rgba(19,32,51,.95),rgba(18,37,59,.88)_58%,rgba(16,27,44,.96))] p-6 shadow-premium">
+    <section v-reveal class="relative overflow-hidden rounded-[2rem] border border-line bg-[radial-gradient(circle_at_12%_0%,rgba(210,164,90,.20),transparent_34%),linear-gradient(135deg,rgba(19,32,51,.95),rgba(18,37,59,.88)_58%,rgba(16,27,44,.96))] p-6 shadow-premium">
       <div class="absolute right-8 top-8 hidden h-44 w-44 rounded-full bg-sky-300/10 blur-3xl lg:block" />
       <div class="relative grid gap-6 xl:grid-cols-[1.2fr_.8fr] xl:items-end">
         <div>
@@ -160,7 +160,7 @@ onMounted(load)
     </section>
 
     <PageState :loading="loading" :error="error" @retry="load">
-      <div class="grid gap-4 md:grid-cols-3 xl:grid-cols-6">
+      <div class="stagger-children grid gap-4 md:grid-cols-3 xl:grid-cols-6">
         <KpiCard label="營收" :value="money(paidRevenue)" :icon="BarChart3" tone="gold" />
         <KpiCard label="訂單" :value="orders.length" :icon="Package" tone="blue" />
         <KpiCard label="待處理" :value="pendingOrders.length" :icon="AlertTriangle" tone="rose" />
@@ -170,7 +170,7 @@ onMounted(load)
       </div>
 
       <div class="grid gap-6 xl:grid-cols-[1.15fr_.85fr]">
-        <SectionCard title="營運管線" subtitle="依據真實訂單狀態從待處理到完成聚合。">
+        <SectionCard v-reveal title="營運管線" subtitle="依據真實訂單狀態從待處理到完成聚合。">
           <div class="space-y-4">
             <div v-for="item in pipeline" :key="item.status" class="rounded-xl border border-line bg-white/[0.07] p-4">
               <div class="mb-2 flex items-center justify-between gap-3">
@@ -181,13 +181,13 @@ onMounted(load)
                 <span class="text-lg font-black text-ink">{{ item.count }}</span>
               </div>
               <div class="h-2 overflow-hidden rounded-full bg-white/[0.08]">
-                <div class="h-full rounded-full bg-gradient-to-r from-sky-300 to-amber-400" :style="{ width: item.width }" />
+                <div class="progress-animate h-full rounded-full bg-gradient-to-r from-sky-300 to-amber-400" :style="{ width: item.width }" />
               </div>
             </div>
           </div>
         </SectionCard>
 
-        <SectionCard title="保固健康度" subtitle="以保固清單與儀表板端點共同呈現。">
+        <SectionCard v-reveal title="保固健康度" subtitle="以保固清單與儀表板端點共同呈現。">
           <div class="grid gap-3">
             <div class="rounded-xl border border-emerald-300/20 bg-emerald-300/10 p-4">
               <p class="text-sm font-semibold text-emerald-200">生效中</p>
@@ -206,7 +206,7 @@ onMounted(load)
       </div>
 
       <div class="grid gap-6 xl:grid-cols-[1.2fr_.8fr]">
-        <SectionCard title="近期訂單" subtitle="最新訂單、會員、付款與履約狀態。">
+        <SectionCard v-reveal title="近期訂單" subtitle="最新訂單、會員、付款與履約狀態。">
           <AdminTable :columns="['單號', '會員', '狀態', '履約', '金額', '建立時間']">
             <tr v-for="order in orders.slice(0, 8)" :key="order.id" class="table-row">
               <td class="px-4 py-3 font-semibold text-ink">{{ order.requestId ?? order.id }}</td>
@@ -222,23 +222,23 @@ onMounted(load)
           </p>
         </SectionCard>
 
-        <SectionCard title="營運提醒" subtitle="需要優先處理的訂單、庫存與保固狀態。">
-          <div class="space-y-3">
-            <RouterLink class="block rounded-xl border border-rose-300/20 bg-rose-300/10 p-4" to="/admin/orders">
+        <SectionCard v-reveal title="營運提醒" subtitle="需要優先處理的訂單、庫存與保固狀態。">
+          <div class="stagger-children space-y-3">
+            <RouterLink class="hover-lift block rounded-xl border border-rose-300/20 bg-rose-300/10 p-4" to="/admin/orders">
               <div class="flex items-center gap-3">
                 <AlertTriangle class="h-5 w-5 text-rose-300" />
                 <p class="font-bold text-ink">待處理訂單 {{ pendingOrders.length }} 筆</p>
               </div>
               <p class="mt-2 text-sm text-slate-500">需要確認付款、履約或下一步作業。</p>
             </RouterLink>
-            <RouterLink class="block rounded-xl border border-amber-300/20 bg-amber-300/10 p-4" to="/admin/commerce">
+            <RouterLink class="hover-lift block rounded-xl border border-amber-300/20 bg-amber-300/10 p-4" to="/admin/commerce">
               <div class="flex items-center gap-3">
                 <Package class="h-5 w-5 text-amber-200" />
                 <p class="font-bold text-ink">低庫存商品 {{ lowStockProducts.length }} 項</p>
               </div>
               <p class="mt-2 text-sm text-slate-500">{{ lowStockProducts[0]?.name ?? '目前沒有低庫存警示。' }}</p>
             </RouterLink>
-            <RouterLink class="block rounded-xl border border-slate-300/15 bg-white/[0.07] p-4" to="/admin/warranties">
+            <RouterLink class="hover-lift block rounded-xl border border-slate-300/15 bg-white/[0.07] p-4" to="/admin/warranties">
               <div class="flex items-center gap-3">
                 <ShieldCheck class="h-5 w-5 text-sky-300" />
                 <p class="font-bold text-ink">已過期保固 {{ expiredWarranties.length }} 張</p>
@@ -250,7 +250,7 @@ onMounted(load)
       </div>
 
       <div class="grid gap-6 xl:grid-cols-3">
-        <SectionCard title="熱門服務 / 商品" subtitle="由訂單品項彙總，無獨立 analytics 端點時使用前端聚合。">
+        <SectionCard v-reveal title="熱門服務 / 商品" subtitle="由訂單品項彙總，無獨立 analytics 端點時使用前端聚合。">
           <div v-if="topItems.length" class="space-y-3">
             <div v-for="item in topItems" :key="item.name" class="rounded-xl border border-line bg-white/[0.07] p-4">
               <div class="flex items-start justify-between gap-3">
@@ -265,7 +265,7 @@ onMounted(load)
           <p v-else class="rounded-xl border border-dashed border-line bg-white/60 p-5 text-sm text-slate-500">尚無足夠訂單品項可彙總。</p>
         </SectionCard>
 
-        <SectionCard title="低庫存商品" subtitle="使用商品管理清單的庫存欄位。">
+        <SectionCard v-reveal title="低庫存商品" subtitle="使用商品管理清單的庫存欄位。">
           <div v-if="lowStockProducts.length" class="space-y-3">
             <div v-for="product in lowStockProducts" :key="product.id" class="rounded-xl border border-line bg-white/[0.07] p-4">
               <p class="font-bold text-ink">{{ product.name }}</p>
@@ -275,7 +275,7 @@ onMounted(load)
           <p v-else class="rounded-xl border border-dashed border-line bg-white/60 p-5 text-sm text-slate-500">目前沒有低庫存商品。</p>
         </SectionCard>
 
-        <SectionCard title="管理捷徑" subtitle="進入常用後台工作區。">
+        <SectionCard v-reveal title="管理捷徑" subtitle="進入常用後台工作區。">
           <div class="grid gap-3">
             <RouterLink class="btn-secondary justify-start" to="/admin/commerce"><Plus class="h-4 w-4" />建立商品</RouterLink>
             <RouterLink class="btn-secondary justify-start" to="/admin/commerce"><Wrench class="h-4 w-4" />建立服務</RouterLink>
@@ -286,7 +286,7 @@ onMounted(load)
         </SectionCard>
       </div>
 
-      <SectionCard title="付款與點數摘要" subtitle="使用付款管理與點數摘要端點。">
+      <SectionCard v-reveal title="付款與點數摘要" subtitle="使用付款管理與點數摘要端點。">
         <div class="grid gap-4 md:grid-cols-3">
           <div class="rounded-xl border border-line bg-white/[0.07] p-4">
             <p class="text-sm font-semibold text-slate-500">付款筆數</p>

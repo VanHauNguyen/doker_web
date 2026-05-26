@@ -1,0 +1,6 @@
+import{r as f,m as n,j as c,q as m,V as y,p as h,U as r,l as v,K as i,W as x,D as d}from"./index-CuZCAlGW.js";import{c as g}from"./createLucideIcon-FHwLswPu.js";/**
+ * @license lucide-vue-next v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const k=g("UploadIcon",[["path",{d:"M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4",key:"ih7n3h"}],["polyline",{points:"17 8 12 3 7 8",key:"t8dd8p"}],["line",{x1:"12",x2:"12",y1:"3",y2:"15",key:"widbto"}]]),b={class:"inline-flex flex-col gap-2"},V={class:"btn-secondary cursor-pointer"},B=["disabled"],N={key:0,class:"text-xs text-danger"},D=f({__name:"UploadButton",emits:["uploaded"],setup(U,{emit:p}){const u=p,e=i(!1),a=i(null),_=async o=>{var l;const s=(l=o.target.files)==null?void 0:l[0];if(s){e.value=!0,a.value=null;try{const t=await x.single(s);u("uploaded",t.url)}catch(t){a.value=t instanceof Error?t.message:"上傳失敗"}finally{e.value=!1}}};return(o,s)=>(d(),n("div",b,[c("label",V,[m(y(k),{class:"h-4 w-4"}),h(" "+r(e.value?"上傳中":"上傳圖片")+" ",1),c("input",{class:"hidden",type:"file",accept:"image/*",disabled:e.value,onChange:_},null,40,B)]),a.value?(d(),n("p",N,r(a.value),1)):v("",!0)]))}});export{D as _};

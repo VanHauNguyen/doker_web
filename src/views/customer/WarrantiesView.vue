@@ -53,7 +53,8 @@ const generateQr = async (id: string): Promise<void> => {
           <StatusBadge :value="warranty.status" />
         </div>
         <div class="mt-4 flex flex-wrap gap-2">
-          <button class="btn-secondary" @click="selected = warranty">查看詳情</button>
+          <RouterLink class="btn-secondary" :to="`/warranties/${warranty.id}`">查看詳情</RouterLink>
+          <button class="btn-secondary" @click="selected = warranty">快速預覽</button>
           <button class="btn-secondary" @click="generateQr(warranty.id)">產生 QR</button>
         </div>
       </article>

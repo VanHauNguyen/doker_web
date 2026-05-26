@@ -8,6 +8,7 @@ import FilterBar from '@/components/FilterBar.vue'
 import LoadingState from '@/components/LoadingState.vue'
 import EmptyState from '@/components/EmptyState.vue'
 import { money } from '@/utils/format'
+import { externalLinks } from '@/config/externalLinks'
 import type { Category, Product } from '@/types/backend'
 
 const cart = useCartStore()
@@ -44,8 +45,12 @@ watch([categoryId, keyword], () => {
 
 <template>
   <div class="space-y-6">
-    <PremiumHero eyebrow="DOKER 商城" title="保固商品、安裝項目與車用升級配件。" description="使用後端商品、分類、規格、庫存與服務型商務資料，呈現真實可購買內容。" />
-    <FilterBar title="商品篩選">
+    <PremiumHero eyebrow="DOKER 商城" title="保固商品、安裝項目與車用升級配件。" description="使用後端商品、分類、規格、庫存與服務型商務資料，呈現真實可購買內容。">
+      <template #actions>
+        <a class="btn-secondary" :href="externalLinks.shopee.href" target="_blank" rel="noreferrer">前往蝦皮商城</a>
+      </template>
+    </PremiumHero>
+    <FilterBar v-reveal title="商品篩選">
       <input v-model="keyword" class="field" placeholder="搜尋商品" />
       <select v-model="categoryId" class="field">
         <option value="">全部分類</option>
@@ -54,8 +59,8 @@ watch([categoryId, keyword], () => {
     </FilterBar>
     <LoadingState v-if="loading" />
     <EmptyState v-else-if="!products.length" title="找不到商品" detail="請調整搜尋關鍵字或分類。" />
-    <div v-else class="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-      <article v-for="product in products" :key="product.id" class="surface group overflow-hidden rounded-xl transition hover:-translate-y-1 hover:border-slate-300/25">
+    <div v-else class="stagger-children grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <article v-for="product in products" :key="product.id" class="hover-lift surface group overflow-hidden rounded-xl transition hover:border-slate-300/25">
         <RouterLink :to="`/products/${product.id}`">
           <img :src="product.images?.[0]?.url ?? '/placeholder-product.svg'" :alt="product.name" class="h-44 w-full bg-slate-900 object-cover" />
         </RouterLink>
@@ -67,8 +72,11 @@ watch([categoryId, keyword], () => {
           </div>
           <div class="flex items-center justify-between gap-3">
             <p class="font-bold text-accent">{{ money(product.price) }}</p>
-            <button v-if="auth.isAuthenticated && !auth.isAdmin" class="btn-primary" @click="cart.add(product.id)">加入購物車</button>
-            <RouterLink v-else-if="!auth.isAuthenticated" class="btn-secondary" to="/auth/login">登入購買</RouterLink>
+            <div class="flex flex-wrap justify-end gap-2">
+              <button v-if="auth.isAuthenticated && !auth.isAdmin" class="btn-primary" @click="cart.add(product.id)">加入購物車</button>
+              <RouterLink v-else-if="!auth.isAuthenticated" class="btn-secondary" to="/auth/login">登入購買</RouterLink>
+              <a class="btn-secondary" :href="externalLinks.shopee.href" target="_blank" rel="noreferrer">蝦皮下單</a>
+            </div>
           </div>
         </div>
       </article>

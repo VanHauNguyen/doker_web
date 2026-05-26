@@ -1,1 +1,0 @@
-import{_ as a}from"./StatusBadge.vue_vue_type_script_setup_true_lang-Ck4w27F7.js";import{p as o,B as t,i as n}from"./index-DHckY84p.js";const c=o({__name:"StatusPill",props:{value:{}},setup(e){return(r,s)=>(t(),n(a,{value:e.value},null,8,["value"]))}});export{c as _};

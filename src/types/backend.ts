@@ -77,6 +77,7 @@ export interface Vehicle {
   mileage?: number | null
   note?: string | null
   imageUrl?: string | null
+  images?: string[] | null
   verified?: boolean
   user?: User
   createdAt?: string
@@ -207,6 +208,7 @@ export interface Order {
   discountAmount?: string | number | null
   shippingFee?: string | number | null
   totalAmount?: string | number | null
+  couponId?: string | null
   couponCode?: string | null
   note?: string | null
   recipientName?: string | null
@@ -228,6 +230,8 @@ export interface Order {
   pickedUpAt?: string | null
   completedAt?: string | null
   canceledAt?: string | null
+  vehicleSnapshot?: Record<string, unknown> | null
+  vehicleImages?: string[] | null
   user?: User
   vehicle?: Vehicle | null
   service?: ServiceItem | null
@@ -242,7 +246,9 @@ export interface OrderItem {
   itemType?: 'SERVICE' | 'PRODUCT'
   serviceId?: string | null
   productId?: string | null
+  product?: Product | null
   productVariantId?: string | null
+  productVariant?: ProductVariant | null
   name: string
   sku?: string | null
   quantity: number
@@ -272,7 +278,11 @@ export interface Warranty {
   vehicle?: Vehicle
   user?: User
   order?: Order
+  orderItemId?: string | null
+  orderItem?: OrderItem | null
+  metadata?: Record<string, unknown> | null
   logs?: WarrantyLog[]
+  createdAt?: string
 }
 
 export interface WarrantyLog {
@@ -290,6 +300,8 @@ export interface NotificationItem {
   body: string
   type: string
   data?: Record<string, unknown> | null
+  order?: Order | null
+  warranty?: Warranty | null
   isRead: boolean
   createdAt: string
 }
@@ -411,6 +423,8 @@ export interface Coupon {
   membershipTierId?: string | null
   membershipTier?: MembershipTier | null
   assignments?: CouponAssignment[]
+  assignedUserIds?: string[]
+  assignmentExpiresAt?: string | null
   usageCondition?: string | null
   applicability?: {
     scope: 'GLOBAL' | 'PRODUCT' | 'CATEGORY' | 'KEYWORD'
@@ -426,6 +440,7 @@ export interface Coupon {
   applyStatus?: string
   canUse?: boolean
   invalidReason?: string | null
+  metadata?: Record<string, unknown> | null
   claimedAt?: string | null
   usedAt?: string | null
   isActive: boolean

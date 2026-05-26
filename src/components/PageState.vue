@@ -44,10 +44,14 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <div v-if="loading" class="surface grid min-h-56 place-items-center rounded-lg">
-    <div class="space-y-3 text-center">
+  <div v-if="loading" class="surface grid min-h-56 place-items-center rounded-lg p-6">
+    <div class="w-full max-w-md space-y-4 text-center">
       <div class="mx-auto h-9 w-9 animate-spin rounded-full border-2 border-amber-100 border-t-accent" />
       <p class="text-sm text-slate-400">資料載入中</p>
+      <div class="space-y-2">
+        <div class="shimmer h-3 rounded-full bg-white/[0.08]" />
+        <div class="shimmer mx-auto h-3 w-4/5 rounded-full bg-white/[0.08]" />
+      </div>
       <div v-if="showWakeMessage" class="mx-auto max-w-sm rounded-2xl border border-amber-300/30 bg-amber-300/10 px-4 py-3 text-sm leading-6 text-amber-100">
         伺服器喚醒中，請稍候...
       </div>

@@ -9,6 +9,7 @@ import LoadingState from '@/components/LoadingState.vue'
 import SectionCard from '@/components/SectionCard.vue'
 import { money } from '@/utils/format'
 import { statusLabel } from '@/utils/status'
+import { externalLinks } from '@/config/externalLinks'
 import type { ApiRecord, Product, ProductReview, ProductVariant } from '@/types/backend'
 
 const route = useRoute()
@@ -38,13 +39,14 @@ onMounted(async () => {
       <template #actions>
         <button v-if="auth.isAuthenticated && !auth.isAdmin" class="btn-primary" @click="cart.add(product.id, selectedVariant?.id)">加入購物車</button>
         <RouterLink v-else-if="!auth.isAuthenticated" class="btn-secondary" to="/auth/login">登入購買</RouterLink>
+        <a class="btn-secondary" :href="externalLinks.shopee.href" target="_blank" rel="noreferrer">前往蝦皮下單</a>
       </template>
     </PageHeader>
     <div class="grid gap-6 lg:grid-cols-[1.15fr_.85fr]">
-      <section class="surface overflow-hidden rounded-lg">
+      <section v-reveal class="surface overflow-hidden rounded-lg">
         <img :src="selectedVariant?.imageUrl ?? product.images?.[0]?.url ?? '/placeholder-product.svg'" :alt="product.name" class="h-[420px] w-full object-cover" />
       </section>
-      <section class="surface space-y-5 rounded-lg p-5">
+      <section v-reveal class="surface space-y-5 rounded-lg p-5">
         <div>
           <p class="label">價格</p>
           <p class="mt-1 text-3xl font-bold text-accent">{{ money(selectedVariant?.priceOverride ?? product.price) }}</p>
@@ -69,9 +71,14 @@ onMounted(async () => {
         <div v-if="selectedVariant?.warrantyEligible" class="rounded-md border border-mint/30 bg-mint/10 p-3 text-sm text-emerald-100">
           可建立保固 · {{ statusLabel(selectedVariant.warrantyType) }} {{ selectedVariant.warrantyDurationValue }} {{ selectedVariant.warrantyDurationUnit }}
         </div>
+        <div class="rounded-xl border border-orange-300/20 bg-orange-400/10 p-4">
+          <p class="font-bold text-slate-100">官方蝦皮商城</p>
+          <p class="mt-1 text-sm leading-6 text-slate-400">若偏好蝦皮平台結帳、物流或活動優惠，也可以前往官方購物平台查看。</p>
+          <a class="btn-secondary mt-3" :href="externalLinks.shopee.href" target="_blank" rel="noreferrer">前往蝦皮下單</a>
+        </div>
       </section>
     </div>
-    <SectionCard title="商品評價" :subtitle="`${reviewSummary?.total ?? product.reviewCount ?? 0} 則評價 · 平均 ${product.averageRating ?? 0}`">
+    <SectionCard v-reveal title="商品評價" :subtitle="`${reviewSummary?.total ?? product.reviewCount ?? 0} 則評價 · 平均 ${product.averageRating ?? 0}`">
       <div v-if="!reviews.length" class="text-sm text-slate-400">目前尚無評價。</div>
       <div v-else class="grid gap-3 md:grid-cols-2">
         <article v-for="review in reviews" :key="review.id" class="rounded-md border border-line p-3">

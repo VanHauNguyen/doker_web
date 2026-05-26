@@ -153,6 +153,7 @@ export const notificationsApi = {
   list: () => get<NotificationItem[]>('/notifications'),
   unreadCount: () => get<number | { count: number }>('/notifications/unread-count'),
   markRead: (id: string) => patch<NotificationItem>(`/notifications/${id}/read`),
+  markAllRead: async (ids: string[]) => Promise.all(ids.map((id) => notificationsApi.markRead(id))),
   testPush: (body: ApiRecord) => post<ApiRecord>('/notifications/admin/test-push', body),
 }
 

@@ -8,6 +8,7 @@ import PremiumHero from '@/components/PremiumHero.vue'
 import { money } from '@/utils/format'
 import { DELIVERY_METHOD_OPTIONS, PAYMENT_METHOD_OPTIONS, PAYMENT_METHODS_BY_DELIVERY } from '@/utils/orderFulfillment'
 import { couponAvailability, couponDiscountText, normalizeCoupon, unwrapList } from '@/utils/membershipRewards'
+import { externalLinks } from '@/config/externalLinks'
 import type { ApiRecord, Coupon, DeliveryMethod, OrderPaymentMethod, Vehicle } from '@/types/backend'
 
 const cart = useCartStore()
@@ -29,6 +30,7 @@ const vehicleBrand = ref('')
 const vehicleModel = ref('')
 const preview = ref<ApiRecord | null>(null)
 const coupons = ref<Coupon[]>([])
+const selectedCouponId = ref('')
 const vehicles = ref<Vehicle[]>([])
 const message = ref<string | null>(null)
 const error = ref<string | null>(null)
@@ -40,9 +42,11 @@ const availablePaymentOptions = computed(() => {
 })
 
 const requiresVehicleInfo = computed(() => Boolean(preview.value?.requiresVehicleInfo))
+const selectedCoupon = computed(() => coupons.value.find((coupon) => coupon.id === selectedCouponId.value) ?? null)
 
 const checkoutBody = computed<ApiRecord>(() => ({
   couponCode: couponCode.value || undefined,
+  couponId: selectedCouponId.value || undefined,
   deliveryMethod: deliveryMethod.value,
   paymentMethod: paymentMethod.value,
   recipientName: recipientName.value,
@@ -64,7 +68,12 @@ const checkoutBody = computed<ApiRecord>(() => ({
 
 const runPreview = async (): Promise<void> => {
   error.value = null
-  preview.value = await checkoutApi.preview(checkoutBody.value)
+  try {
+    preview.value = await checkoutApi.preview(checkoutBody.value)
+  } catch (err) {
+    preview.value = null
+    error.value = err instanceof Error ? err.message : '結帳試算失敗'
+  }
 }
 
 const createOrder = async (): Promise<void> => {
@@ -83,6 +92,7 @@ const createOrder = async (): Promise<void> => {
 }
 
 const applyCoupon = async (coupon: Coupon): Promise<void> => {
+  selectedCouponId.value = coupon.id
   couponCode.value = coupon.code ?? ''
   await runPreview()
 }
@@ -118,7 +128,7 @@ onMounted(async () => {
     />
     <EmptyState v-if="!cart.cart?.items.length" title="購物車目前是空的" detail="前往商城挑選商品或安裝服務。" />
     <div v-else class="grid gap-6 lg:grid-cols-[1.1fr_.9fr]">
-      <SectionCard title="購物車商品" subtitle="同步後端購物車快照、規格、數量與金額。">
+      <SectionCard v-reveal title="購物車商品" subtitle="同步後端購物車快照、規格、數量與金額。">
         <div class="mt-4 divide-y divide-line">
           <div v-for="item in cart.cart.items" :key="item.id" class="grid gap-3 py-4 sm:grid-cols-[1fr_120px_80px] sm:items-center">
             <div>
@@ -130,7 +140,7 @@ onMounted(async () => {
           </div>
         </div>
       </SectionCard>
-      <form class="surface space-y-4 rounded-lg p-5" @submit.prevent="createOrder">
+      <form v-reveal class="surface space-y-4 rounded-lg p-5" @submit.prevent="createOrder">
         <div>
           <p class="text-lg font-bold text-white">配送與付款</p>
           <p class="mt-1 text-sm text-slate-400">送出前可先試算，確認優惠券、運費、庫存與車輛資料需求。</p>
@@ -166,7 +176,12 @@ onMounted(async () => {
             <input v-model="vehicleModel" class="field" placeholder="車型" />
           </template>
         </div>
-        <input v-model="couponCode" class="field" placeholder="優惠券代碼" />
+        <input v-model="couponCode" class="field" placeholder="優惠券代碼" @input="selectedCouponId = ''" />
+        <div v-if="selectedCoupon" class="rounded-2xl border border-amber-200/20 bg-amber-300/10 p-3 text-sm text-amber-50">
+          <p class="font-black">已選擇：{{ selectedCoupon.name }}</p>
+          <p class="mt-1 text-xs text-amber-100/80">{{ couponDiscountText(selectedCoupon) }} · 以優惠券 ID 由後端驗證資格與適用商品</p>
+          <button class="mt-2 text-xs font-bold text-slate-100 underline decoration-amber-200/40" type="button" @click="selectedCouponId = ''; couponCode = ''; preview = null">取消使用</button>
+        </div>
         <div class="space-y-2">
           <p class="label">可用優惠券</p>
           <p v-if="couponLoading" class="rounded-xl border border-white/10 bg-white/[0.04] p-3 text-sm text-slate-400">優惠券載入中...</p>
@@ -185,7 +200,9 @@ onMounted(async () => {
                 <span class="block font-semibold text-white">{{ coupon.name }}</span>
                 <span class="mt-1 block text-xs text-slate-400">{{ couponDiscountText(coupon) }} · {{ coupon.usageCondition ?? coupon.applicabilityLabel ?? '結帳時驗證' }}</span>
               </span>
-              <span class="rounded-full border border-white/10 px-2 py-1 text-xs text-slate-300">{{ couponAvailability(coupon, cart.subtotal, cart.cart?.items ?? []).label }}</span>
+              <span class="rounded-full border border-white/10 px-2 py-1 text-xs" :class="selectedCouponId === coupon.id ? 'bg-amber-300/15 text-amber-100' : 'text-slate-300'">
+                {{ selectedCouponId === coupon.id ? '已選擇' : couponAvailability(coupon, cart.subtotal, cart.cart?.items ?? []).label }}
+              </span>
             </span>
             <span v-if="couponAvailability(coupon, cart.subtotal, cart.cart?.items ?? []).reason" class="mt-2 block text-xs text-slate-500">
               {{ couponAvailability(coupon, cart.subtotal, cart.cart?.items ?? []).reason }}
@@ -203,6 +220,11 @@ onMounted(async () => {
         <div class="flex gap-2">
           <button class="btn-secondary flex-1" type="button" @click="runPreview">試算</button>
           <button class="btn-primary flex-1">建立訂單</button>
+        </div>
+        <div class="rounded-xl border border-orange-300/20 bg-orange-400/10 p-4">
+          <p class="font-bold text-slate-100">也可使用官方蝦皮商城</p>
+          <p class="mt-1 text-sm leading-6 text-slate-400">如果想使用蝦皮付款、物流或平台優惠，可改至官方蝦皮商城線上快速下單。</p>
+          <a class="btn-secondary mt-3" :href="externalLinks.shopee.href" target="_blank" rel="noreferrer">前往蝦皮下單</a>
         </div>
       </form>
     </div>

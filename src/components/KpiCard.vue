@@ -1,13 +1,46 @@
 <script setup lang="ts">
+import { computed, onMounted, ref, watch } from 'vue'
 import type { Component } from 'vue'
 
-defineProps<{
+const props = defineProps<{
   label: string
   value: string | number
   note?: string
   icon?: Component
   tone?: 'blue' | 'green' | 'gold' | 'rose' | 'slate'
 }>()
+
+const displayValue = ref<string | number>(props.value)
+const numericValue = computed(() => typeof props.value === 'number' ? props.value : null)
+
+const animateValue = (target: number): void => {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    displayValue.value = target
+    return
+  }
+  const start = Number(displayValue.value) || 0
+  const startedAt = performance.now()
+  const duration = 700
+  const tick = (now: number): void => {
+    const progress = Math.min((now - startedAt) / duration, 1)
+    const eased = 1 - Math.pow(1 - progress, 3)
+    displayValue.value = Math.round(start + (target - start) * eased)
+    if (progress < 1) requestAnimationFrame(tick)
+  }
+  requestAnimationFrame(tick)
+}
+
+watch(() => props.value, (value) => {
+  if (typeof value === 'number') animateValue(value)
+  else displayValue.value = value
+})
+
+onMounted(() => {
+  if (numericValue.value !== null) {
+    displayValue.value = 0
+    animateValue(numericValue.value)
+  }
+})
 
 const toneClass = {
   blue: 'from-sky-400/18 to-white/[0.045] text-sky-200',
@@ -19,12 +52,12 @@ const toneClass = {
 </script>
 
 <template>
-  <section class="relative overflow-hidden rounded-xl border border-line bg-gradient-to-br p-5 shadow-premium transition hover:-translate-y-1 hover:border-amber-500/30" :class="toneClass[tone ?? 'blue']">
+  <section class="hover-lift relative overflow-hidden rounded-xl border border-line bg-gradient-to-br p-5 shadow-premium transition hover:border-amber-500/30" :class="toneClass[tone ?? 'blue']">
     <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-300/70 to-transparent" />
     <div class="flex items-start justify-between gap-3">
       <div>
         <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">{{ label }}</p>
-        <p class="mt-3 text-3xl font-black text-slate-100">{{ value }}</p>
+        <p class="mt-3 text-3xl font-black text-slate-100">{{ displayValue }}</p>
       </div>
       <div v-if="icon" class="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/[0.08] shadow-sm">
         <component :is="icon" class="h-5 w-5" />

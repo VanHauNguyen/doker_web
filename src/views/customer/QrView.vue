@@ -216,8 +216,8 @@ onMounted(loadAll)
     </PageHeader>
 
     <PageState :loading="loading" :error="error">
-      <div v-if="!isAdmin" class="grid gap-6 xl:grid-cols-3">
-        <section v-if="userQr" class="qr-card">
+      <div v-if="!isAdmin" class="stagger-children grid gap-6 xl:grid-cols-3">
+        <section v-if="userQr" class="qr-card hover-lift">
           <div>
             <p class="label">{{ userQr.title }}</p>
             <h2 class="mt-2 text-xl font-bold text-white">{{ userQr.subtitle }}</h2>
@@ -228,7 +228,7 @@ onMounted(loadAll)
             <p v-if="userQr.expiresText" class="text-xs text-amber-100">{{ userQr.expiresText }}</p>
           </div>
           <div class="grid grid-cols-2 gap-3">
-            <button class="btn-secondary" @click="copyText(userQr.token, 'member')">
+            <button class="btn-secondary" :class="{ 'copy-pop': copied === 'member' }" @click="copyText(userQr.token, 'member')">
               <Copy class="h-4 w-4" />
               {{ copied === 'member' ? '已複製' : '複製 Token' }}
             </button>
@@ -238,13 +238,13 @@ onMounted(loadAll)
             </button>
           </div>
         </section>
-        <section v-else class="qr-card justify-center">
+        <section v-else class="qr-card hover-lift justify-center">
           <h2 class="text-xl font-bold text-white">尚未取得會員 QR</h2>
           <p class="text-sm text-slate-400">後端未回傳 token，請重新整理後再試。</p>
           <button class="btn-primary" @click="loadUserQr">重試</button>
         </section>
 
-        <section class="qr-card">
+        <section class="qr-card hover-lift">
           <div>
             <p class="label">保固 QR</p>
             <h2 class="mt-2 text-xl font-bold text-white">指定保固快速查驗</h2>
@@ -258,7 +258,7 @@ onMounted(loadAll)
           <template v-if="warrantyQr">
             <img :src="warrantyQr.image ?? ''" alt="保固 QR Code" class="qr-image" />
             <p class="break-all rounded-lg border border-white/10 bg-black/25 p-3 text-xs text-slate-300">{{ warrantyQr.token }}</p>
-            <button class="btn-secondary" @click="copyText(warrantyQr.rawPayload, 'warranty')">
+            <button class="btn-secondary" :class="{ 'copy-pop': copied === 'warranty' }" @click="copyText(warrantyQr.rawPayload, 'warranty')">
               <Copy class="h-4 w-4" />
               {{ copied === 'warranty' ? '已複製' : '複製掃描內容' }}
             </button>
@@ -266,18 +266,18 @@ onMounted(loadAll)
           <p v-else class="rounded-lg border border-dashed border-white/15 p-4 text-sm text-slate-400">目前沒有可顯示的保固 QR。</p>
         </section>
 
-        <section class="qr-card">
+        <section class="qr-card hover-lift">
           <div>
             <p class="label">獎勵核銷 QR</p>
             <h2 class="mt-2 text-xl font-bold text-white">待核銷兌換券</h2>
           </div>
           <div v-if="rewardQrs.length" class="space-y-4">
-            <article v-for="item in rewardQrs" :key="item.token" class="rounded-lg border border-white/10 bg-white/[0.04] p-3">
+            <article v-for="item in rewardQrs" :key="item.token" class="hover-lift rounded-lg border border-white/10 bg-white/[0.04] p-3">
               <p class="font-semibold text-white">{{ item.title }}</p>
               <img :src="item.image ?? ''" alt="獎勵核銷 QR Code" class="mx-auto my-3 h-44 w-44 rounded-lg bg-white p-2" />
               <p class="break-all text-xs text-slate-400">{{ item.token }}</p>
               <p v-if="item.expiresText" class="mt-1 text-xs text-amber-100">{{ item.expiresText }}</p>
-              <button class="btn-secondary mt-3 w-full" @click="copyText(item.rawPayload, item.token)">
+              <button class="btn-secondary mt-3 w-full" :class="{ 'copy-pop': copied === item.token }" @click="copyText(item.rawPayload, item.token)">
                 <Copy class="h-4 w-4" />
                 {{ copied === item.token ? '已複製' : '複製掃描內容' }}
               </button>
@@ -287,7 +287,7 @@ onMounted(loadAll)
         </section>
       </div>
 
-      <section class="surface rounded-lg p-5">
+      <section v-reveal class="surface rounded-lg p-5">
         <div class="flex flex-col gap-2">
           <p class="label">手動掃描備援</p>
           <h2 class="text-xl font-bold text-white">輸入 QR 內容或 Token 查詢</h2>
@@ -301,6 +301,7 @@ onMounted(loadAll)
           </button>
         </form>
 
+        <Transition name="result-fade">
         <div v-if="scanResult" class="mt-5 rounded-lg border border-emerald-300/20 bg-emerald-300/10 p-4">
           <div class="flex flex-wrap items-center justify-between gap-3">
             <p class="font-bold text-white">{{ scanResult.resultType ?? scanResult.status ?? '查詢結果' }}</p>
@@ -308,6 +309,7 @@ onMounted(loadAll)
           </div>
           <pre class="mt-3 max-h-96 overflow-auto rounded-lg bg-black/30 p-3 text-xs text-slate-200">{{ scanResult }}</pre>
         </div>
+        </Transition>
       </section>
     </PageState>
   </div>
