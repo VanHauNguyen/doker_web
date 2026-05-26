@@ -1,0 +1,6 @@
+import{c}from"./createLucideIcon-BPlhZegb.js";import{p as d,i as b,k as p,h as e,P as a,o as u,Q as m,K as f,j as h,T as k,B as l}from"./index-DHckY84p.js";/**
+ * @license lucide-vue-next v0.468.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this source tree.
+ */const y=c("XIcon",[["path",{d:"M18 6 6 18",key:"1bl5f8"}],["path",{d:"m6 6 12 12",key:"d8bk6v"}]]),x={key:0,class:"fixed inset-0 z-50"},_={class:"surface absolute right-0 top-0 h-full w-full max-w-2xl overflow-y-auto border-y-0 border-r-0 p-5 shadow-2xl"},w={class:"flex items-start justify-between gap-4 border-b border-line pb-4"},v={class:"label"},B={class:"mt-1 text-xl font-bold text-slate-100"},g={class:"py-5"},N=d({__name:"AdminDetailDrawer",props:{open:{type:Boolean},title:{},subtitle:{}},emits:["close"],setup(s,{emit:n}){const o=n;return(r,t)=>(l(),b(k,{to:"body"},[s.open?(l(),p("div",x,[e("button",{class:"absolute inset-0 bg-black/55 backdrop-blur-sm","aria-label":"關閉明細",onClick:t[0]||(t[0]=i=>o("close"))}),e("aside",_,[e("header",w,[e("div",null,[e("p",v,a(s.subtitle),1),e("h2",B,a(s.title),1)]),e("button",{class:"btn-secondary h-10 w-10 px-0","aria-label":"關閉",onClick:t[1]||(t[1]=i=>o("close"))},[u(m(y),{class:"h-4 w-4"})])]),e("div",g,[f(r.$slots,"default")])])])):h("",!0)]))}});export{N as _};
