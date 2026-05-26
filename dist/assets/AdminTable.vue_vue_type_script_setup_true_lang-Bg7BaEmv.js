@@ -1,1 +1,0 @@
-import{_ as e}from"./DataTable.vue_vue_type_script_setup_true_lang-DkzScWTj.js";import{r as a,k as n,a5 as t,D as r,M as m}from"./index-CuZCAlGW.js";const u=a({__name:"AdminTable",props:{columns:{}},setup(o){return(s,c)=>(r(),n(e,{columns:o.columns},{default:t(()=>[m(s.$slots,"default")]),_:3},8,["columns"]))}});export{u as _};

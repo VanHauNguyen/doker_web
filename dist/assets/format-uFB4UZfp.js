@@ -1,1 +1,0 @@
-const e=t=>{const r=Number(t??0);return new Intl.NumberFormat("zh-TW",{style:"currency",currency:"TWD",maximumFractionDigits:0}).format(Number.isFinite(r)?r:0)},i=t=>t?new Intl.DateTimeFormat("zh-TW",{month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"}).format(new Date(t)):"-",n=t=>Array.isArray(t)?t:t.data;export{i as d,e as m,n};

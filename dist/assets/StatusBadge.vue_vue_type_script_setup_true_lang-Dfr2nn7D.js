@@ -1,1 +1,0 @@
-import{s as a,a as t}from"./status-SOAm-M3H.js";import{r as n,D as r,m as l,y as o,V as s,U as m}from"./index-CuZCAlGW.js";const f=n({__name:"StatusBadge",props:{value:{}},setup(e){return(u,i)=>(r(),l("span",{class:o(["inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold",s(a)(e.value)])},m(s(t)(e.value)),3))}});export{f as _};
