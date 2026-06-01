@@ -21,7 +21,7 @@ onMounted(load)
   <div class="space-y-6">
     <PageHeader title="會員管理">
       <template #actions>
-        <input v-model="search" class="field w-72" placeholder="搜尋姓名、Email、手機" @input="load" />
+        <input v-model="search" class="field w-full sm:w-72" placeholder="搜尋姓名、Email、手機" @input="load" />
       </template>
     </PageHeader>
     <AdminTable :columns="['姓名', 'Email', '手機', '會員等級', '點數', '角色', '操作']">

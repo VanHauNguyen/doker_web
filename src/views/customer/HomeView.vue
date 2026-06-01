@@ -254,7 +254,7 @@ onBeforeUnmount(() => {
     <section
       v-if="currentBanner"
       :key="currentBanner.id"
-      class="relative overflow-hidden rounded-[2rem] border border-white/10 bg-panel shadow-premium"
+      class="relative overflow-hidden rounded-2xl border border-white/10 bg-panel shadow-premium sm:rounded-[2rem]"
     >
       <div class="absolute inset-0 bg-gradient-to-br" :class="currentBanner.tone" />
       <img
@@ -265,13 +265,13 @@ onBeforeUnmount(() => {
       <div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(8,15,28,.76),rgba(8,15,28,.34)_38%,rgba(8,15,28,.06)_70%,rgba(8,15,28,.02))]" />
       <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-200/70 to-transparent" />
 
-      <div class="relative grid min-h-[420px] gap-8 p-5 sm:p-8 lg:grid-cols-[1fr_360px] lg:items-end">
-        <div class="max-w-4xl rounded-[1.5rem] border border-white/10 bg-ink/36 p-5 pb-6 shadow-[0_18px_55px_rgba(0,0,0,.28)] backdrop-blur-md sm:p-7">
-          <p class="inline-flex rounded-full border border-amber-200/25 bg-amber-300/12 px-4 py-1.5 text-xs font-black tracking-[0.22em] text-amber-100 backdrop-blur-xl">
+      <div class="relative grid min-h-[340px] gap-5 p-4 sm:min-h-[420px] sm:gap-8 sm:p-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-end">
+        <div class="max-w-4xl rounded-[1.5rem] border border-white/10 bg-ink/36 p-4 pb-5 shadow-[0_18px_55px_rgba(0,0,0,.28)] backdrop-blur-md sm:p-7">
+          <p class="inline-flex max-w-full rounded-full border border-amber-200/25 bg-amber-300/12 px-3 py-1.5 text-xs font-black tracking-wide text-amber-100 backdrop-blur-xl sm:px-4 sm:tracking-[0.22em]">
             {{ currentBanner.tag }}
           </p>
 
-          <h1 class="mt-6 max-w-4xl text-4xl font-black leading-tight text-[#f6efe2] [text-shadow:0_4px_24px_rgba(0,0,0,.55)] sm:text-6xl">
+          <h1 class="mt-5 max-w-4xl break-words text-3xl font-black leading-tight text-[#f6efe2] [text-shadow:0_4px_24px_rgba(0,0,0,.55)] sm:mt-6 sm:text-6xl">
             {{ currentBanner.title }}
           </h1>
 
@@ -289,7 +289,7 @@ onBeforeUnmount(() => {
           </div>
         </div>
 
-        <div class="mb-10 rounded-[1.5rem] border border-white/10 bg-ink/44 p-4 shadow-[0_16px_50px_rgba(0,0,0,.28)] backdrop-blur-2xl">
+        <div class="mb-0 rounded-[1.5rem] border border-white/10 bg-ink/44 p-4 shadow-[0_16px_50px_rgba(0,0,0,.28)] backdrop-blur-2xl sm:mb-10">
           <div class="mb-4 flex items-center justify-between">
             <div>
               <p class="text-xs font-bold tracking-[0.18em] text-amber-100">MEMBER STATUS</p>
@@ -298,7 +298,7 @@ onBeforeUnmount(() => {
             <Sparkles class="h-5 w-5 text-amber-200" />
           </div>
 
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid gap-3 sm:grid-cols-2">
             <KpiCard label="會員點數" :value="points" :icon="Gift" tone="gold" />
             <KpiCard label="會員等級" :value="currentTier?.name ?? '一般會員'" :icon="Sparkles" tone="blue" />
             <KpiCard label="可用優惠券" :value="coupons.length" :icon="Ticket" tone="rose" />
@@ -307,13 +307,13 @@ onBeforeUnmount(() => {
         </div>
       </div>
 
-      <div class="absolute bottom-5 left-5 right-5 flex items-center justify-between gap-4">
+      <div class="relative left-auto right-auto bottom-auto mt-4 flex items-center justify-between gap-4 px-4 pb-4 sm:absolute sm:bottom-5 sm:left-5 sm:right-5 sm:mt-0 sm:px-0 sm:pb-0">
         <div class="flex gap-2">
           <button
             v-for="(_, index) in banners"
             :key="index"
             class="h-2.5 rounded-full transition-all"
-            :class="index === activeBanner ? 'w-10 scale-105 bg-gradient-to-r from-amber-400 to-yellow-500 shadow-lg shadow-amber-400/30' : 'w-2.5 bg-white/70 hover:bg-white'"
+            :class="index === activeBanner ? 'w-8 scale-105 bg-gradient-to-r from-amber-400 to-yellow-500 shadow-lg shadow-amber-400/30 sm:w-10' : 'w-2.5 bg-white/70 hover:bg-white'"
             type="button"
             @click="activeBanner = index"
           />
@@ -334,13 +334,13 @@ onBeforeUnmount(() => {
     <section v-reveal class="relative overflow-hidden rounded-[2rem] border border-line bg-[radial-gradient(circle_at_20%_10%,rgba(210,164,90,.18),transparent_32%),linear-gradient(135deg,rgba(19,32,51,.94),rgba(18,37,59,.88)_52%,rgba(16,27,44,.94))] p-5 shadow-premium sm:p-8">
       <div class="absolute right-8 top-8 hidden h-56 w-56 rounded-full bg-sky-400/10 blur-3xl lg:block" />
 
-      <div class="relative grid gap-8 xl:grid-cols-[1.2fr_.8fr] xl:items-end">
-        <div>
+      <div class="relative grid min-w-0 gap-8 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,.8fr)] xl:items-end">
+        <div class="min-w-0">
           <p class="inline-flex rounded-full border border-amber-300/25 bg-amber-300/10 px-3 py-1 text-xs font-bold text-amber-100">
             DOKER 會員服務中心
           </p>
 
-          <h1 class="mt-5 max-w-4xl text-3xl font-black leading-tight text-slate-100 sm:text-5xl">
+          <h1 class="mt-5 max-w-4xl break-words text-3xl font-black leading-tight text-slate-100 sm:text-5xl">
             {{ auth.user?.name ?? '會員' }}，歡迎回到你的機車保固與服務入口。
           </h1>
 
@@ -364,7 +364,7 @@ onBeforeUnmount(() => {
     </section>
 
     <PageState :loading="loading" :error="error" :empty="false">
-      <div class="grid gap-6 xl:grid-cols-[1.25fr_.75fr]">
+      <div class="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1.25fr)_minmax(0,.75fr)]">
         <SectionCard v-reveal title="快速入口" subtitle="依照行動 App 首頁邏輯整理最常用的會員動作。">
           <div class="stagger-children grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             <RouterLink
@@ -393,17 +393,17 @@ onBeforeUnmount(() => {
         </SectionCard>
       </div>
 
-      <div class="grid gap-6 xl:grid-cols-[.9fr_1.1fr]">
+      <div class="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,.9fr)_minmax(0,1.1fr)]">
         <SectionCard v-reveal title="最新訂單" subtitle="同步訂單狀態、履約流程與付款總額。">
           <div v-if="orders.length" class="space-y-3">
             <RouterLink v-for="order in orders.slice(0, 4)" :key="order.id" :to="`/orders/${order.id}`" class="glass-card block">
-              <div class="flex items-center justify-between gap-4">
-                <div>
-                  <p class="font-bold text-white">{{ order.requestId ?? order.id }}</p>
+              <div class="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div class="min-w-0">
+                  <p class="break-words font-bold text-white">{{ order.requestId ?? order.id }}</p>
                   <p class="mt-1 text-sm text-slate-400">{{ getOrderTimelineCurrentLabel(order) }} · {{ dateTime(order.createdAt) }}</p>
                 </div>
 
-                <div class="text-right">
+                <div class="shrink-0 sm:text-right">
                   <StatusBadge :value="order.status" />
                   <p class="mt-2 font-black text-accent">{{ money(order.totalAmount) }}</p>
                 </div>
@@ -439,7 +439,7 @@ onBeforeUnmount(() => {
         </SectionCard>
       </div>
 
-      <div class="grid gap-6 xl:grid-cols-[1.1fr_.9fr]">
+      <div class="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1.1fr)_minmax(0,.9fr)]">
         <SectionCard title="最新公告" subtitle="對應行動 App 首頁的最新公告區塊。">
           <div v-if="news.length" class="grid gap-4 lg:grid-cols-2">
             <RouterLink
@@ -471,7 +471,7 @@ onBeforeUnmount(() => {
               :href="`https://www.youtube.com/watch?v=${video.id}`"
               target="_blank"
               rel="noreferrer"
-              class="group grid gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3 transition hover:border-red-300/25 sm:grid-cols-[140px_1fr]"
+              class="group grid min-w-0 gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-3 transition hover:border-red-300/25 sm:grid-cols-[140px_minmax(0,1fr)]"
             >
               <img v-if="video.thumbnail" :src="video.thumbnail" :alt="video.title" class="h-24 w-full rounded-xl object-cover" />
               <div class="flex min-w-0 flex-col justify-center">
@@ -489,25 +489,25 @@ onBeforeUnmount(() => {
       </div>
 
       <section v-reveal class="relative overflow-hidden rounded-[2rem] border border-orange-300/20 bg-[radial-gradient(circle_at_12%_0%,rgba(238,114,45,.18),transparent_30%),linear-gradient(135deg,rgba(19,32,51,.92),rgba(18,37,59,.82))] p-5 shadow-premium sm:p-7">
-        <div class="relative grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
-          <div class="flex items-start gap-4">
+        <div class="relative grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+          <div class="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start">
             <div class="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-orange-300/25 bg-orange-400/12 text-orange-200">
               <ShoppingCart class="h-7 w-7" />
             </div>
-            <div>
+            <div class="min-w-0">
               <p class="label text-orange-200">官方購物平台</p>
               <h2 class="mt-2 text-2xl font-black text-slate-100">官方蝦皮商城</h2>
               <p class="mt-2 max-w-2xl text-sm leading-6 text-slate-300">
                 偏好蝦皮結帳、物流或平台優惠時，可前往 DOKER 官方蝦皮商城查看更多商品並線上快速下單。
               </p>
               <div v-if="products.length" class="mt-4 flex flex-wrap gap-2">
-                <span v-for="product in products.slice(0, 3)" :key="product.id" class="rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs text-slate-300">
+                <span v-for="product in products.slice(0, 3)" :key="product.id" class="max-w-full break-words rounded-full border border-white/10 bg-white/[0.06] px-3 py-1 text-xs text-slate-300">
                   {{ product.name }}
                 </span>
               </div>
             </div>
           </div>
-          <a class="btn-primary" :href="externalLinks.shopee.href" target="_blank" rel="noreferrer">
+          <a class="btn-primary w-full lg:w-auto" :href="externalLinks.shopee.href" target="_blank" rel="noreferrer">
             前往蝦皮商城
           </a>
         </div>

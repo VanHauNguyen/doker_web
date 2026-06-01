@@ -49,7 +49,7 @@ onMounted(async () => {
       </div>
     </PremiumHero>
 
-    <div class="grid gap-6 xl:grid-cols-[1.25fr_.75fr]">
+    <div class="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1.25fr)_minmax(0,.75fr)]">
       <SectionCard title="近期訂單動態" subtitle="依據後端訂單與履約欄位呈現即時狀態。">
         <div class="space-y-3">
           <RouterLink v-for="order in orders" :key="order.id" :to="`/orders/${order.id}`" class="glass-card block">

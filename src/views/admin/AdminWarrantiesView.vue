@@ -114,7 +114,7 @@ onMounted(load)
           <p class="label">保固 QR</p>
           <img :src="warrantyQrImage" alt="保固 QR Code" class="mx-auto mt-3 h-56 w-56 rounded-lg bg-white p-2" />
         </div>
-        <form class="grid gap-3 md:grid-cols-[180px_1fr_auto]" @submit.prevent="addLog">
+        <form class="grid min-w-0 gap-3 md:grid-cols-[180px_minmax(0,1fr)_auto]" @submit.prevent="addLog">
           <select v-model="action" class="field">
             <option value="INSPECTION">檢查</option>
             <option value="REPAIR">維修</option>

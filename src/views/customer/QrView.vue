@@ -293,9 +293,9 @@ onMounted(loadAll)
           <h2 class="text-xl font-bold text-white">輸入 QR 內容或 Token 查詢</h2>
           <p class="text-sm text-slate-400">網頁端目前保留手動輸入；若貼上獎勵 QR JSON，會自動走獎勵核銷端點。</p>
         </div>
-        <form class="mt-4 grid gap-3 lg:grid-cols-[1fr_auto]" @submit.prevent="scan">
+        <form class="mt-4 grid min-w-0 gap-3 sm:grid-cols-[minmax(0,1fr)_auto]" @submit.prevent="scan">
           <input v-model="scanInput" class="field" placeholder="貼上 QR JSON，或輸入會員 Token" />
-          <button class="btn-primary" :disabled="scanLoading">
+          <button class="btn-primary w-full sm:w-auto" :disabled="scanLoading">
             <Search class="h-4 w-4" />
             {{ scanLoading ? '查詢中' : '查詢' }}
           </button>
@@ -318,6 +318,8 @@ onMounted(loadAll)
 <style scoped>
 .qr-card {
   display: flex;
+  max-width: 100%;
+  min-width: 0;
   min-height: 100%;
   flex-direction: column;
   gap: 1rem;

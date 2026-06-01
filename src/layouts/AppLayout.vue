@@ -10,6 +10,7 @@ import {
   Gift,
   LogOut,
   MapPin,
+  Menu,
   MessageCircle,
   Newspaper,
   Package,
@@ -19,8 +20,9 @@ import {
   ShoppingCart,
   UserRound,
   Wrench,
+  X,
 } from 'lucide-vue-next'
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useCartStore } from '@/stores/cart'
@@ -36,6 +38,7 @@ const router = useRouter()
 const auth = useAuthStore()
 const cart = useCartStore()
 const realtime = useRealtimeStore()
+const mobileMenuOpen = ref(false)
 
 const customerNav = [
   { to: '/home', label: '首頁', icon: Home },
@@ -114,6 +117,13 @@ const platformCards = [
 
 const isActive = (path: string): boolean => route.path === path || route.path.startsWith(`${path}/`)
 
+watch(
+  () => route.fullPath,
+  () => {
+    mobileMenuOpen.value = false
+  },
+)
+
 const signOut = async (): Promise<void> => {
   realtime.disconnect()
   await auth.logout()
@@ -129,13 +139,14 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="min-h-screen">
+  <div class="min-h-screen overflow-x-hidden">
+    <div class="app-ambient" aria-hidden="true" />
     <aside class="fixed inset-y-0 left-0 z-30 hidden w-72 border-r border-line bg-ink/72 p-4 shadow-[12px_0_55px_rgba(0,0,0,.26)] backdrop-blur-2xl xl:block">
-      <div class="mb-6 rounded-2xl border border-line bg-gradient-to-br from-white/[0.11] to-white/[0.045] p-4 shadow-sm">
+      <div class="premium-panel mb-6 rounded-2xl bg-gradient-to-br from-white/[0.11] to-white/[0.045] p-4">
         <div class="flex items-center gap-3">
-          <div class="grid h-11 w-11 place-items-center rounded-xl bg-accent text-lg font-black text-white shadow-lg shadow-amber-500/20">D</div>
+          <div class="grid h-11 w-11 place-items-center rounded-xl bg-accent text-lg font-black text-ink shadow-lg shadow-amber-500/20">D</div>
           <div>
-            <p class="text-sm font-black text-ink">DOKER</p>
+            <p class="gradient-title text-sm font-black">DOKER</p>
             <p class="text-xs text-slate-400">保固服務平台</p>
           </div>
         </div>
@@ -160,16 +171,21 @@ onMounted(async () => {
     <div class="xl:pl-72">
       <header class="sticky top-0 z-20 border-b border-line bg-ink/68 px-4 py-3 shadow-sm backdrop-blur-2xl sm:px-6">
         <div class="flex items-center justify-between gap-3">
-          <div class="min-w-0">
+          <div class="flex min-w-0 items-center gap-3">
+            <button class="btn-secondary h-10 w-10 shrink-0 px-0 xl:hidden" type="button" aria-label="開啟選單" @click="mobileMenuOpen = true">
+              <Menu class="h-4 w-4" />
+            </button>
+            <div class="min-w-0">
             <div class="mb-1 flex items-center gap-2 text-xs text-slate-500">
-              <RouterLink class="hover:text-accent" to="/">DOKER</RouterLink>
+              <RouterLink class="font-bold hover:text-accent" to="/">DOKER</RouterLink>
               <ChevronRight class="h-3 w-3" />
-              <span>{{ route.path.split('/').filter(Boolean)[0] ?? '首頁' }}</span>
+              <span class="truncate">{{ route.path.split('/').filter(Boolean)[0] ?? '首頁' }}</span>
             </div>
             <p class="truncate text-sm font-semibold text-slate-100">{{ auth.user?.name ?? 'DOKER' }}</p>
             <p class="truncate text-xs text-slate-500">{{ auth.user ? `${auth.user.email} · ${auth.user.role === 'ADMIN' ? '後台管理員' : '一般會員'}` : '公開瀏覽' }}</p>
+            </div>
           </div>
-          <div class="flex items-center gap-2">
+          <div class="flex shrink-0 items-center gap-2">
             <RouterLink v-if="auth.isAuthenticated" to="/notifications" class="btn-secondary relative h-10 w-10 px-0" title="通知中心">
               <Bell class="h-4 w-4" />
               <span v-if="realtime.unread" class="absolute -right-1 -top-1 rounded-full bg-danger px-1.5 text-[10px] font-bold text-white">
@@ -191,21 +207,41 @@ onMounted(async () => {
             </button>
           </div>
         </div>
-        <nav class="mt-3 flex gap-2 overflow-x-auto xl:hidden">
-          <RouterLink
-            v-for="item in nav"
-            :key="item.to"
-            :to="item.to"
-            class="flex shrink-0 items-center gap-2 rounded-md border border-line bg-white/[0.065] px-3 py-2 text-xs text-slate-400"
-            :class="{ 'bg-amber-300/15 text-slate-100': isActive(item.to) }"
-          >
-            <component :is="item.icon" class="h-4 w-4" />
-            {{ item.label }}
-          </RouterLink>
-        </nav>
       </header>
 
-      <main class="mx-auto max-w-[1500px] px-4 py-8 sm:px-6">
+      <Teleport to="body">
+        <div v-if="mobileMenuOpen" class="fixed inset-0 z-50 xl:hidden">
+          <button class="absolute inset-0 bg-black/55 backdrop-blur-sm" aria-label="關閉選單" @click="mobileMenuOpen = false" />
+          <aside class="surface absolute left-0 top-0 flex h-full w-[min(86vw,20rem)] max-w-full flex-col overflow-y-auto rounded-r-2xl border-y-0 border-l-0 p-4 shadow-2xl">
+            <div class="mb-5 flex items-center justify-between gap-3">
+              <div class="min-w-0">
+                <p class="gradient-title text-sm font-black">DOKER</p>
+                <p class="truncate text-xs text-slate-400">保固服務平台</p>
+              </div>
+              <button class="btn-secondary h-10 w-10 shrink-0 px-0" type="button" aria-label="關閉選單" @click="mobileMenuOpen = false">
+                <X class="h-4 w-4" />
+              </button>
+            </div>
+            <nav class="grid gap-1">
+              <RouterLink
+                v-for="item in nav"
+                :key="item.to"
+                :to="item.to"
+                class="group flex min-w-0 items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-400 transition hover:bg-white/[0.075] hover:text-slate-100"
+                :class="{ 'border border-amber-300/25 bg-gradient-to-r from-amber-300/18 to-white/[0.06] text-slate-100 shadow-md shadow-black/20': isActive(item.to) }"
+              >
+                <span class="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white/[0.075] text-accent ring-1 ring-amber-200/15 group-hover:bg-white/[0.12]">
+                  <component :is="item.icon" class="h-4 w-4" />
+                </span>
+                <span class="min-w-0 flex-1 truncate">{{ item.label }}</span>
+                <ChevronRight v-if="isActive(item.to)" class="h-4 w-4 shrink-0 text-accent" />
+              </RouterLink>
+            </nav>
+          </aside>
+        </div>
+      </Teleport>
+
+      <main class="mx-auto max-w-[1500px] px-3 py-5 sm:px-6 sm:py-8">
         <RouterView v-slot="{ Component, route: activeRoute }">
           <Transition name="page-fade" mode="out-in">
             <component :is="Component" :key="activeRoute.fullPath" />
@@ -213,17 +249,17 @@ onMounted(async () => {
         </RouterView>
       </main>
 
-      <footer v-if="showBrandFooter" v-reveal class="mx-auto max-w-[1500px] px-4 pb-8 sm:px-6">
-        <section class="relative overflow-hidden rounded-[2rem] border border-line bg-[radial-gradient(circle_at_12%_0%,rgba(210,164,90,.18),transparent_32%),linear-gradient(135deg,rgba(19,32,51,.92),rgba(12,23,40,.96))] p-5 shadow-premium sm:p-7">
+      <footer v-if="showBrandFooter" v-reveal class="mx-auto max-w-[1500px] px-3 pb-6 sm:px-6 sm:pb-8">
+        <section class="relative overflow-hidden rounded-2xl border border-line bg-[radial-gradient(circle_at_12%_0%,rgba(210,164,90,.18),transparent_32%),linear-gradient(135deg,rgba(19,32,51,.92),rgba(12,23,40,.96))] p-4 shadow-premium sm:rounded-[2rem] sm:p-7">
           <div class="absolute right-10 top-8 hidden h-40 w-40 rounded-full bg-sky-300/10 blur-3xl lg:block" />
-          <div class="relative grid gap-6 xl:grid-cols-[.8fr_1.55fr_.65fr]">
+          <div class="relative grid min-w-0 gap-6 xl:grid-cols-[minmax(0,.8fr)_minmax(0,1.55fr)_minmax(0,.65fr)]">
             <div class="rounded-2xl border border-amber-300/18 bg-white/[0.055] p-5">
               <div class="grid h-12 w-12 place-items-center rounded-2xl bg-accent text-lg font-black text-ink shadow-lg shadow-amber-500/20">D</div>
               <p class="mt-5 text-xl font-black text-slate-100">DOKER 保固服務平台</p>
               <p class="mt-3 text-sm leading-6 text-slate-400">
                 整合保固、會員、商城、客服與官方購物平台，提供高階機車服務的一站式體驗。
               </p>
-              <a class="btn-primary mt-5" :href="externalLinks.shopee.href" target="_blank" rel="noreferrer">
+              <a class="btn-primary mt-5 w-full sm:w-auto" :href="externalLinks.shopee.href" target="_blank" rel="noreferrer">
                 前往蝦皮商城
                 <ExternalLink class="h-4 w-4" />
               </a>
@@ -246,12 +282,12 @@ onMounted(async () => {
                   target="_blank"
                   rel="noreferrer"
                 >
-                  <div class="flex items-start gap-4">
+                  <div class="flex min-w-0 items-start gap-4">
                     <img :src="item.logo" :alt="item.title" class="h-12 w-12 rounded-2xl shadow-lg shadow-black/20" />
                     <div class="min-w-0 flex-1">
-                      <p class="font-black text-slate-100">{{ item.title }}</p>
+                      <p class="break-words font-black text-slate-100">{{ item.title }}</p>
                       <p class="mt-1 min-h-10 text-sm leading-5 text-slate-400">{{ item.subtitle }}</p>
-                      <span class="mt-4 inline-flex items-center gap-2 text-sm font-bold text-accent">
+                      <span class="mt-4 inline-flex max-w-full items-center gap-2 break-words text-sm font-bold text-accent">
                         {{ item.button }}
                         <ExternalLink class="h-4 w-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                       </span>

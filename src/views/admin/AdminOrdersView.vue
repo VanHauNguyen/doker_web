@@ -91,8 +91,8 @@ onMounted(load)
   <div class="space-y-6">
     <PremiumHero eyebrow="訂單管理" title="處理商品、安裝與舊版服務訂單。" description="管理動作依照行動 App 下一步邏輯與後端履約端點產生。" />
     <AdminToolbar title="訂單佇列篩選" subtitle="依照後端訂單狀態與本機關鍵字搜尋縮小工作範圍。">
-        <input v-model="search" class="field w-72" placeholder="搜尋單號、會員、車牌、收件人" />
-        <select v-model="status" class="field w-48" @change="load">
+        <input v-model="search" class="field w-full sm:w-72" placeholder="搜尋單號、會員、車牌、收件人" />
+        <select v-model="status" class="field w-full sm:w-48" @change="load">
           <option value="">全部狀態</option>
           <option value="PENDING">待處理</option>
           <option value="PAID">已付款</option>

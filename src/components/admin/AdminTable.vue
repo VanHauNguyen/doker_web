@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <DataTable :columns="columns">
+  <DataTable :columns="columns" min-width="920px">
     <slot />
   </DataTable>
 </template>

@@ -3,9 +3,10 @@ import { ShieldCheck, Sparkles, Wrench } from 'lucide-vue-next'
 </script>
 
 <template>
-  <main class="relative min-h-screen overflow-hidden bg-[radial-gradient(circle_at_18%_12%,rgba(245,158,11,.18),transparent_28%),radial-gradient(circle_at_88%_20%,rgba(56,189,248,.16),transparent_24%),linear-gradient(135deg,#07111f,#101827_48%,#172033)] px-4 py-6 text-white">
+  <main class="relative min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_18%_12%,rgba(245,158,11,.18),transparent_28%),radial-gradient(circle_at_88%_20%,rgba(56,189,248,.16),transparent_24%),linear-gradient(135deg,#07111f,#101827_48%,#172033)] px-3 py-4 text-white sm:px-4 sm:py-6">
+    <div class="app-ambient" aria-hidden="true" />
     <div class="absolute inset-0 bg-[linear-gradient(120deg,rgba(255,255,255,.06),transparent_26%,rgba(255,255,255,.035)_54%,transparent_78%)] opacity-70" />
-    <div class="relative mx-auto grid min-h-[calc(100vh-3rem)] w-full max-w-6xl overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.045] shadow-2xl shadow-black/30 backdrop-blur-xl lg:grid-cols-[1fr_480px]">
+    <div class="premium-panel relative mx-auto grid min-h-[calc(100vh-2rem)] w-full max-w-6xl rounded-2xl bg-white/[0.045] sm:min-h-[calc(100vh-3rem)] sm:rounded-[2rem] lg:grid-cols-[minmax(0,1fr)_minmax(0,480px)]">
       <section class="hidden flex-col justify-between border-r border-white/10 p-10 lg:flex">
         <div>
           <div class="inline-flex items-center gap-2 rounded-full border border-amber-200/20 bg-amber-300/10 px-3 py-1 text-xs font-black text-amber-100">
@@ -31,7 +32,7 @@ import { ShieldCheck, Sparkles, Wrench } from 'lucide-vue-next'
           </div>
         </div>
       </section>
-      <section class="relative grid place-items-center p-5 sm:p-8">
+      <section class="relative grid min-w-0 place-items-center p-4 sm:p-8">
         <div class="w-full max-w-md">
           <div class="mb-6 lg:hidden">
             <p class="text-xs font-black text-amber-100">DOKER</p>

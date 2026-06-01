@@ -346,7 +346,7 @@ onMounted(load)
     </div>
     <section class="surface rounded-lg p-5">
       <h2 class="font-bold text-white">獎勵核銷掃描備援</h2>
-      <form class="mt-3 grid gap-3 md:grid-cols-[1fr_auto]" @submit.prevent="scanRedemption">
+      <form class="mt-3 grid min-w-0 gap-3 md:grid-cols-[minmax(0,1fr)_auto]" @submit.prevent="scanRedemption">
         <input v-model="scanToken" class="field" placeholder="貼上 REWARD_REDEMPTION JSON 或 token" />
         <button class="btn-primary">查詢核銷</button>
       </form>

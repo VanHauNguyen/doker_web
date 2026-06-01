@@ -42,14 +42,14 @@ onMounted(async () => {
         <a class="btn-secondary" :href="externalLinks.shopee.href" target="_blank" rel="noreferrer">前往蝦皮下單</a>
       </template>
     </PageHeader>
-    <div class="grid gap-6 lg:grid-cols-[1.15fr_.85fr]">
+    <div class="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,.85fr)]">
       <section v-reveal class="surface overflow-hidden rounded-lg">
-        <img :src="selectedVariant?.imageUrl ?? product.images?.[0]?.url ?? '/placeholder-product.svg'" :alt="product.name" class="h-[420px] w-full object-cover" />
+        <img :src="selectedVariant?.imageUrl ?? product.images?.[0]?.url ?? '/placeholder-product.svg'" :alt="product.name" class="h-72 w-full object-cover sm:h-[420px]" />
       </section>
-      <section v-reveal class="surface space-y-5 rounded-lg p-5">
+      <section v-reveal class="surface min-w-0 space-y-5 rounded-lg p-4 sm:p-5">
         <div>
           <p class="label">價格</p>
-          <p class="mt-1 text-3xl font-bold text-accent">{{ money(selectedVariant?.priceOverride ?? product.price) }}</p>
+          <p class="mt-1 break-words text-3xl font-bold text-accent">{{ money(selectedVariant?.priceOverride ?? product.price) }}</p>
         </div>
         <div>
           <p class="label">庫存</p>
@@ -64,8 +64,8 @@ onMounted(async () => {
             :class="{ 'border-accent bg-accent/10': selectedVariant?.id === variant.id }"
             @click="selectedVariant = variant"
           >
-            <span class="font-semibold text-white">{{ Object.values(variant.options).join(' / ') || variant.sku }}</span>
-            <span class="ml-2 text-slate-400">{{ money(variant.priceOverride ?? product.price) }}</span>
+            <span class="block break-words font-semibold text-white">{{ Object.values(variant.options).join(' / ') || variant.sku }}</span>
+            <span class="mt-1 block text-slate-400">{{ money(variant.priceOverride ?? product.price) }}</span>
           </button>
         </div>
         <div v-if="selectedVariant?.warrantyEligible" class="rounded-md border border-mint/30 bg-mint/10 p-3 text-sm text-emerald-100">

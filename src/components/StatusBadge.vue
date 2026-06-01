@@ -7,7 +7,7 @@ defineProps<{
 </script>
 
 <template>
-  <span class="inline-flex items-center rounded-full border px-2.5 py-1 text-xs font-semibold" :class="statusClass(value)">
+  <span class="inline-flex max-w-full items-center rounded-full border px-2.5 py-1 text-xs font-semibold leading-snug" :class="statusClass(value)">
     {{ statusLabel(value) }}
   </span>
 </template>

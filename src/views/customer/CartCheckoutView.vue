@@ -127,20 +127,20 @@ onMounted(async () => {
       description="依照行動 App 結帳規則：配送方式會限制付款方式，優惠券由後端驗證，安裝商品可綁定愛車資料。"
     />
     <EmptyState v-if="!cart.cart?.items.length" title="購物車目前是空的" detail="前往商城挑選商品或安裝服務。" />
-    <div v-else class="grid gap-6 lg:grid-cols-[1.1fr_.9fr]">
+    <div v-else class="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,.9fr)]">
       <SectionCard v-reveal title="購物車商品" subtitle="同步後端購物車快照、規格、數量與金額。">
         <div class="mt-4 divide-y divide-line">
-          <div v-for="item in cart.cart.items" :key="item.id" class="grid gap-3 py-4 sm:grid-cols-[1fr_120px_80px] sm:items-center">
-            <div>
-              <p class="font-semibold text-white">{{ item.product.name }}</p>
-              <p class="text-sm text-slate-400">{{ item.productVariant?.sku ?? item.product.sku }}</p>
+          <div v-for="item in cart.cart.items" :key="item.id" class="grid min-w-0 gap-3 py-4 sm:grid-cols-[minmax(0,1fr)_120px_80px] sm:items-center">
+            <div class="min-w-0">
+              <p class="break-words font-semibold text-white">{{ item.product.name }}</p>
+              <p class="break-words text-sm text-slate-400">{{ item.productVariant?.sku ?? item.product.sku }}</p>
             </div>
             <input class="field" type="number" min="1" :value="item.quantity" @change="cart.update(item.id, Number(($event.target as HTMLInputElement).value))" />
             <button class="btn-secondary" @click="cart.remove(item.id)">移除</button>
           </div>
         </div>
       </SectionCard>
-      <form v-reveal class="surface space-y-4 rounded-lg p-5" @submit.prevent="createOrder">
+      <form v-reveal class="surface min-w-0 space-y-4 rounded-lg p-4 sm:p-5" @submit.prevent="createOrder">
         <div>
           <p class="text-lg font-bold text-white">配送與付款</p>
           <p class="mt-1 text-sm text-slate-400">送出前可先試算，確認優惠券、運費、庫存與車輛資料需求。</p>
@@ -195,12 +195,12 @@ onMounted(async () => {
             :disabled="!couponAvailability(coupon, cart.subtotal, cart.cart?.items ?? []).canUse"
             @click="applyCoupon(coupon)"
           >
-            <span class="flex items-center justify-between gap-3">
-              <span>
+            <span class="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <span class="min-w-0">
                 <span class="block font-semibold text-white">{{ coupon.name }}</span>
                 <span class="mt-1 block text-xs text-slate-400">{{ couponDiscountText(coupon) }} · {{ coupon.usageCondition ?? coupon.applicabilityLabel ?? '結帳時驗證' }}</span>
               </span>
-              <span class="rounded-full border border-white/10 px-2 py-1 text-xs" :class="selectedCouponId === coupon.id ? 'bg-amber-300/15 text-amber-100' : 'text-slate-300'">
+              <span class="w-fit rounded-full border border-white/10 px-2 py-1 text-xs" :class="selectedCouponId === coupon.id ? 'bg-amber-300/15 text-amber-100' : 'text-slate-300'">
                 {{ selectedCouponId === coupon.id ? '已選擇' : couponAvailability(coupon, cart.subtotal, cart.cart?.items ?? []).label }}
               </span>
             </span>
@@ -217,7 +217,7 @@ onMounted(async () => {
         </div>
         <p v-if="message" class="text-sm text-mint">{{ message }}</p>
         <p v-if="error" class="text-sm text-danger">{{ error }}</p>
-        <div class="flex gap-2">
+        <div class="flex flex-col gap-2 sm:flex-row">
           <button class="btn-secondary flex-1" type="button" @click="runPreview">試算</button>
           <button class="btn-primary flex-1">建立訂單</button>
         </div>

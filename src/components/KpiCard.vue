@@ -52,17 +52,17 @@ const toneClass = {
 </script>
 
 <template>
-  <section class="hover-lift relative overflow-hidden rounded-xl border border-line bg-gradient-to-br p-5 shadow-premium transition hover:border-amber-500/30" :class="toneClass[tone ?? 'blue']">
+  <section class="hover-lift relative min-w-0 overflow-hidden rounded-xl border border-line bg-gradient-to-br p-4 shadow-premium transition hover:border-amber-500/30 sm:p-5" :class="toneClass[tone ?? 'blue']">
     <div class="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-amber-300/70 to-transparent" />
-    <div class="flex items-start justify-between gap-3">
-      <div>
-        <p class="text-xs font-semibold uppercase tracking-wide text-slate-400">{{ label }}</p>
-        <p class="mt-3 text-3xl font-black text-slate-100">{{ displayValue }}</p>
+    <div class="flex min-w-0 items-start justify-between gap-3">
+      <div class="min-w-0">
+        <p class="break-words text-xs font-semibold uppercase tracking-wide text-slate-400">{{ label }}</p>
+        <p class="mt-3 break-words text-2xl font-black text-slate-100 sm:text-3xl">{{ displayValue }}</p>
       </div>
-      <div v-if="icon" class="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/[0.08] shadow-sm">
+      <div v-if="icon" class="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[0.08] shadow-sm">
         <component :is="icon" class="h-5 w-5" />
       </div>
     </div>
-    <p v-if="note" class="mt-3 text-xs leading-5 text-slate-400">{{ note }}</p>
+    <p v-if="note" class="mt-3 break-words text-xs leading-5 text-slate-400">{{ note }}</p>
   </section>
 </template>

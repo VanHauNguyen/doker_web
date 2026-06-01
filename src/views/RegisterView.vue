@@ -77,14 +77,14 @@ const submit = async (): Promise<void> => {
 </script>
 
 <template>
-  <form class="animate-scale-in rounded-[1.5rem] border border-white/10 bg-slate-950/50 p-6 shadow-2xl shadow-black/30 backdrop-blur-xl" @submit.prevent="submit">
+  <form class="animate-scale-in w-full max-w-full rounded-[1.5rem] border border-white/10 bg-slate-950/50 p-4 shadow-2xl shadow-black/30 backdrop-blur-xl sm:p-6" @submit.prevent="submit">
     <div class="mb-6">
       <p class="text-xs font-black text-amber-100">建立 DOKER 會員</p>
-      <h2 class="mt-3 text-3xl font-black text-white">開始保固與會員服務</h2>
+      <h2 class="mt-3 text-2xl font-black text-white sm:text-3xl">開始保固與會員服務</h2>
       <div class="mt-4 h-2 overflow-hidden rounded-full bg-slate-900">
         <div class="h-full rounded-full bg-gradient-to-r from-amber-300 to-sky-300 transition-all" :style="{ width: `${progress}%` }" />
       </div>
-      <div class="mt-3 grid grid-cols-3 gap-2 text-xs text-slate-400">
+      <div class="mt-3 grid grid-cols-1 gap-1 text-xs text-slate-400 sm:grid-cols-3 sm:gap-2">
         <span class="text-amber-100">1. 帳號資料</span>
         <span :class="otpSent ? 'text-amber-100' : ''">2. OTP 驗證</span>
         <span :class="terms ? 'text-amber-100' : ''">3. 完成啟用</span>
@@ -105,9 +105,9 @@ const submit = async (): Promise<void> => {
       <AuthField v-model="confirmPassword" label="確認密碼" type="password" :icon="LockKeyhole" autocomplete="new-password" required :error="touched && password !== confirmPassword ? '密碼確認不一致' : null" />
       <div>
         <label class="mb-2 block text-xs font-black text-slate-300">Email / 簡訊驗證碼</label>
-        <div class="grid grid-cols-[1fr_auto] gap-2">
+        <div class="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
           <input v-model="code" class="field h-12 rounded-2xl bg-slate-950/35" required />
-          <button class="btn-secondary" type="button" :disabled="sendingOtp" @click="sendOtp">{{ sendingOtp ? '送出中' : otpSent ? '重新發送' : '發送 OTP' }}</button>
+          <button class="btn-secondary w-full sm:w-auto" type="button" :disabled="sendingOtp" @click="sendOtp">{{ sendingOtp ? '送出中' : otpSent ? '重新發送' : '發送 OTP' }}</button>
         </div>
       </div>
     </div>
@@ -116,7 +116,7 @@ const submit = async (): Promise<void> => {
       <input v-model="terms" class="mt-1 accent-amber-300" type="checkbox" />
       <span>我同意 DOKER 服務條款與隱私權政策，並了解保固、訂單與會員資料將用於平台服務。</span>
     </label>
-    <p v-if="status" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-100"><CheckCircle2 class="h-4 w-4" /> {{ status }}</p>
+    <p v-if="status" class="mt-4 inline-flex max-w-full items-center gap-2 break-words text-sm font-semibold text-emerald-100"><CheckCircle2 class="h-4 w-4 shrink-0" /> {{ status }}</p>
     <p v-if="error" class="mt-4 rounded-2xl border border-rose-300/25 bg-rose-300/10 p-3 text-sm font-semibold text-rose-100">{{ error }}</p>
     <button class="btn-primary mt-5 h-12 w-full" :disabled="auth.loading">{{ auth.loading ? '建立中...' : '建立會員帳號' }}</button>
     <RouterLink class="mt-5 block text-center text-sm font-black text-accent" to="/auth/login">已經有帳號，返回登入</RouterLink>

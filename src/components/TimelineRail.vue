@@ -6,7 +6,7 @@ defineProps<{
 
 <template>
   <div class="space-y-0">
-    <div v-for="(step, index) in steps" :key="step.key" class="grid grid-cols-[28px_1fr] gap-3">
+    <div v-for="(step, index) in steps" :key="step.key" class="grid min-w-0 grid-cols-[28px_minmax(0,1fr)] gap-3">
       <div class="flex flex-col items-center">
         <div
           class="h-3.5 w-3.5 rounded-full border"
@@ -19,9 +19,9 @@ defineProps<{
         />
         <div v-if="index < steps.length - 1" class="h-10 w-px bg-line" />
       </div>
-      <div class="-mt-1 pb-4">
-        <p class="text-sm font-semibold text-ink">{{ step.label }}</p>
-        <p v-if="step.value" class="mt-1 text-xs text-slate-500">{{ step.value }}</p>
+      <div class="-mt-1 min-w-0 pb-4">
+        <p class="break-words text-sm font-semibold text-ink">{{ step.label }}</p>
+        <p v-if="step.value" class="mt-1 break-words text-xs text-slate-500">{{ step.value }}</p>
       </div>
     </div>
   </div>

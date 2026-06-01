@@ -64,10 +64,10 @@ const reset = async (): Promise<void> => {
 </script>
 
 <template>
-  <form class="animate-scale-in rounded-[1.5rem] border border-white/10 bg-slate-950/50 p-6 shadow-2xl shadow-black/30 backdrop-blur-xl" @submit.prevent="reset">
+  <form class="animate-scale-in w-full max-w-full rounded-[1.5rem] border border-white/10 bg-slate-950/50 p-4 shadow-2xl shadow-black/30 backdrop-blur-xl sm:p-6" @submit.prevent="reset">
     <div class="mb-6">
       <p class="text-xs font-black text-amber-100">帳號安全</p>
-      <h2 class="mt-3 text-3xl font-black text-white">重設登入密碼</h2>
+      <h2 class="mt-3 text-2xl font-black text-white sm:text-3xl">重設登入密碼</h2>
       <p class="mt-2 text-sm leading-6 text-slate-400">透過後端 OTP 驗證碼確認身份，再設定新的會員密碼。</p>
     </div>
 
@@ -86,7 +86,7 @@ const reset = async (): Promise<void> => {
       </Transition>
     </div>
 
-    <p v-if="message" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-emerald-100"><CheckCircle2 class="h-4 w-4" /> {{ message }}</p>
+    <p v-if="message" class="mt-4 inline-flex max-w-full items-center gap-2 break-words text-sm font-semibold text-emerald-100"><CheckCircle2 class="h-4 w-4 shrink-0" /> {{ message }}</p>
     <p v-if="error" class="mt-4 rounded-2xl border border-rose-300/25 bg-rose-300/10 p-3 text-sm font-semibold text-rose-100">{{ error }}</p>
     <RouterLink class="mt-5 block text-center text-sm font-black text-accent" to="/auth/login">返回登入</RouterLink>
   </form>

@@ -65,7 +65,7 @@ onBeforeUnmount(() => {
 <template>
   <div class="space-y-6">
     <PageHeader title="客服聊天室" description="使用後端 Socket.IO：join_room、message:send、receive_message。" />
-    <div class="grid gap-6 lg:grid-cols-[300px_1fr]">
+    <div class="grid min-w-0 gap-6 lg:grid-cols-[300px_minmax(0,1fr)]">
       <aside class="surface rounded-lg p-4">
         <button class="btn-secondary w-full" @click="openRoom()">我的聊天室</button>
         <div v-if="auth.isAdmin" class="mt-4 space-y-2">
@@ -75,22 +75,22 @@ onBeforeUnmount(() => {
             class="w-full rounded-md border border-line p-3 text-left text-sm hover:bg-white/[0.05]"
             @click="openRoom(user.id)"
           >
-            <span class="block font-semibold text-white">{{ user.name ?? user.email }}</span>
-            <span class="text-slate-500">{{ user.email }}</span>
+            <span class="block truncate font-semibold text-white">{{ user.name ?? user.email }}</span>
+            <span class="block truncate text-slate-500">{{ user.email }}</span>
           </button>
         </div>
       </aside>
-      <section class="surface flex h-[640px] flex-col rounded-lg">
+      <section class="surface flex h-[calc(100dvh-13rem)] min-h-[420px] min-w-0 flex-col rounded-lg lg:h-[640px]">
         <div ref="panel" class="flex-1 space-y-3 overflow-y-auto p-4">
-          <div v-for="message in messages" :key="message.id" class="max-w-[78%] rounded-lg border border-line p-3" :class="message.senderId === auth.user?.id ? 'ml-auto bg-accent/15' : 'bg-white/[0.04]'">
+          <div v-for="message in messages" :key="message.id" class="max-w-[88%] break-words rounded-lg border border-line p-3 sm:max-w-[78%]" :class="message.senderId === auth.user?.id ? 'ml-auto bg-accent/15' : 'bg-white/[0.04]'">
             <p class="text-sm text-white">{{ message.content }}</p>
             <p class="mt-1 text-[11px] text-slate-500">{{ dateTime(message.createdAt) }}</p>
           </div>
         </div>
         <form class="border-t border-line p-4" @submit.prevent="send">
-          <div class="grid grid-cols-[1fr_auto] gap-2">
+          <div class="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
             <input v-model="content" class="field" placeholder="輸入訊息" />
-            <button class="btn-primary" :disabled="sending">{{ sending ? '送出中' : '送出' }}</button>
+            <button class="btn-primary w-full sm:w-auto" :disabled="sending">{{ sending ? '送出中' : '送出' }}</button>
           </div>
         </form>
       </section>

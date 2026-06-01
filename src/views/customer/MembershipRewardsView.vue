@@ -179,20 +179,20 @@ onMounted(load)
     <PageState :loading="loading" :error="error" :empty="false" @retry="load">
       <p v-if="message" class="rounded-2xl border border-emerald-300/20 bg-emerald-300/10 px-4 py-3 text-sm font-semibold text-emerald-100">{{ message }}</p>
 
-      <section class="grid gap-6 xl:grid-cols-[1.05fr_.95fr]">
-        <div v-reveal class="relative overflow-hidden rounded-[1.5rem] border border-amber-200/20 bg-[radial-gradient(circle_at_20%_0%,rgba(245,158,11,.32),transparent_35%),linear-gradient(135deg,rgba(15,23,42,.95),rgba(12,30,52,.9))] p-6 shadow-2xl shadow-black/30">
-          <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
-            <div>
+      <section class="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1.05fr)_minmax(0,.95fr)]">
+        <div v-reveal class="relative overflow-hidden rounded-[1.5rem] border border-amber-200/20 bg-[radial-gradient(circle_at_20%_0%,rgba(245,158,11,.32),transparent_35%),linear-gradient(135deg,rgba(15,23,42,.95),rgba(12,30,52,.9))] p-4 shadow-2xl shadow-black/30 sm:p-6">
+          <div class="flex min-w-0 flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div class="min-w-0">
               <p class="text-xs font-black text-amber-100">目前等級</p>
               <div class="mt-2 flex flex-wrap items-center gap-3">
-                <h2 class="text-3xl font-black text-white">{{ currentTier?.name ?? '會員資料同步中' }}</h2>
+                <h2 class="break-words text-2xl font-black text-white sm:text-3xl">{{ currentTier?.name ?? '會員資料同步中' }}</h2>
                 <span v-if="currentTier" class="inline-flex items-center gap-1 rounded-full border border-amber-200/25 bg-amber-300/10 px-3 py-1 text-xs font-black text-amber-100">
                   <Crown class="h-3.5 w-3.5" /> {{ tierLevelText(currentTier) }}
                 </span>
               </div>
               <p class="mt-2 max-w-xl text-sm leading-6 text-slate-300">{{ currentTier?.description ?? '完成消費、任務與評價可累積點數，提升會員等級。' }}</p>
             </div>
-            <div class="rounded-2xl border border-white/10 bg-white/[0.06] p-4 text-right">
+            <div class="rounded-2xl border border-white/10 bg-white/[0.06] p-4 text-left sm:text-right">
               <p class="text-xs text-slate-400">點數倍率</p>
               <p class="text-3xl font-black text-accent">{{ toNumber(currentTier?.pointEarnRate, 1) }}x</p>
             </div>
@@ -217,16 +217,16 @@ onMounted(load)
           </div>
         </div>
 
-        <section v-reveal class="surface rounded-2xl p-5">
-          <div class="mb-4 flex items-center justify-between">
+        <section v-reveal class="surface min-w-0 rounded-2xl p-4 sm:p-5">
+          <div class="mb-4 flex min-w-0 items-center justify-between gap-3">
             <h2 class="text-lg font-black text-white">會員等級</h2>
             <RouterLink class="text-sm font-semibold text-accent" to="/profile">查看個人資料</RouterLink>
           </div>
           <div v-if="tiers.length" class="space-y-3">
             <div v-for="(tier, index) in tiers" :key="tier.id" class="rounded-2xl border border-white/10 bg-white/[0.035] p-4" :class="currentTier?.id === tier.id ? 'ring-1 ring-amber-200/30' : ''">
-              <div class="flex items-center justify-between gap-3">
-                <div>
-                  <p class="font-bold text-white">{{ tier.name }}</p>
+              <div class="flex min-w-0 items-center justify-between gap-3">
+                <div class="min-w-0">
+                  <p class="break-words font-bold text-white">{{ tier.name }}</p>
                   <p class="mt-1 text-xs text-slate-500">{{ tierLevelText(tier, index) }}</p>
                 </div>
                 <span class="rounded-full border border-amber-200/20 bg-amber-300/10 px-2.5 py-1 text-xs font-bold text-amber-100">{{ toNumber(tier.pointEarnRate, 1) }}x</span>
@@ -256,10 +256,10 @@ onMounted(load)
         </section>
       </section>
 
-      <section class="grid gap-6 xl:grid-cols-[1.15fr_.85fr]">
-        <div v-reveal class="surface rounded-2xl p-5">
-          <div class="mb-4 flex items-center justify-between gap-3">
-            <div>
+      <section class="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,.85fr)]">
+        <div v-reveal class="surface min-w-0 rounded-2xl p-4 sm:p-5">
+          <div class="mb-4 flex min-w-0 items-center justify-between gap-3">
+            <div class="min-w-0">
               <h2 class="text-lg font-black text-white">可兌換獎勵</h2>
               <p class="mt-1 text-sm text-slate-400">兌換後會即時扣點；商品型獎勵可產生 QR 供門市核銷。</p>
             </div>
@@ -279,12 +279,12 @@ onMounted(load)
           </div>
           <div v-if="filteredRewards.length" class="stagger-children grid gap-4 lg:grid-cols-2">
             <article v-for="reward in filteredRewards" :key="reward.id" class="hover-lift group overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.075] to-white/[0.025] p-4 transition hover:border-amber-200/25">
-              <div class="flex items-start justify-between gap-3">
-                <div>
+              <div class="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div class="min-w-0">
                   <p class="text-xs font-bold text-accent">{{ rewardCategoryLabel(reward) }}</p>
-                  <h3 class="mt-1 text-lg font-black text-white">{{ reward.name }}</h3>
+                  <h3 class="mt-1 break-words text-lg font-black text-white">{{ reward.name }}</h3>
                 </div>
-                <div class="rounded-2xl bg-amber-300/10 px-3 py-2 text-right">
+                <div class="w-fit rounded-2xl bg-amber-300/10 px-3 py-2 text-left sm:text-right">
                   <p class="text-xs text-amber-100">需要</p>
                   <p class="font-black text-amber-100">{{ reward.pointsCost }} 點</p>
                 </div>
@@ -295,9 +295,9 @@ onMounted(load)
                 <span v-if="reward.stock !== null && reward.stock !== undefined" class="rounded-full border border-white/10 bg-white/[0.035] px-2 py-1">庫存 {{ reward.stock }}</span>
                 <span v-if="reward.expiresAt" class="rounded-full border border-white/10 bg-white/[0.035] px-2 py-1">期限 {{ dateTime(reward.expiresAt) }}</span>
               </div>
-              <div class="mt-4 flex items-center justify-between gap-3">
+              <div class="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <button class="text-sm font-semibold text-sky-100 transition hover:text-accent" type="button" @click="selectedReward = reward">查看詳情</button>
-                <button class="btn-primary" :disabled="redeemingId === reward.id || Boolean(rewardUnavailableReason(reward, points))" @click="redeem(reward)">
+                <button class="btn-primary w-full sm:w-auto" :disabled="redeemingId === reward.id || Boolean(rewardUnavailableReason(reward, points))" @click="redeem(reward)">
                   {{ redeemingId === reward.id ? '兌換中' : rewardUnavailableReason(reward, points) ?? '兌換' }}
                 </button>
               </div>
@@ -306,13 +306,13 @@ onMounted(load)
           <p v-else class="rounded-2xl border border-dashed border-white/15 p-6 text-center text-sm text-slate-400">目前沒有符合條件的獎勵。</p>
         </div>
 
-        <div v-reveal class="surface rounded-2xl p-5">
+        <div v-reveal class="surface min-w-0 rounded-2xl p-4 sm:p-5">
           <h2 class="text-lg font-black text-white">我的兌換紀錄</h2>
           <div v-if="redemptions.length" class="mt-4 space-y-3">
             <article v-for="item in redemptions" :key="item.id" class="rounded-2xl border border-white/10 bg-white/[0.04] p-4">
-              <div class="flex items-center justify-between gap-3">
-                <div>
-                  <p class="font-bold text-white">{{ item.reward?.name ?? '獎勵兌換' }}</p>
+              <div class="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                <div class="min-w-0">
+                  <p class="break-words font-bold text-white">{{ item.reward?.name ?? '獎勵兌換' }}</p>
                   <p class="mt-1 text-sm text-slate-400">{{ item.pointsSpent }} 點 · {{ dateTime(item.createdAt) }}</p>
                 </div>
                 <StatusBadge :value="item.status" />
@@ -329,9 +329,9 @@ onMounted(load)
         </div>
       </section>
 
-      <section v-reveal class="surface rounded-2xl p-5">
-        <div class="mb-4 flex items-center justify-between">
-          <div>
+      <section v-reveal class="surface min-w-0 rounded-2xl p-4 sm:p-5">
+        <div class="mb-4 flex min-w-0 items-center justify-between gap-3">
+          <div class="min-w-0">
             <h2 class="text-lg font-black text-white">優惠券錢包</h2>
             <p class="mt-1 text-sm text-slate-400">優惠券會在結帳預覽與建立訂單時由後端再次驗證。</p>
           </div>
@@ -341,16 +341,16 @@ onMounted(load)
           <article v-for="coupon in coupons" :key="coupon.id" class="hover-lift relative overflow-hidden rounded-2xl border p-4" :class="couponAvailability(coupon).canUse ? 'border-amber-200/25 bg-amber-300/10' : 'border-white/10 bg-white/[0.035] opacity-75'">
             <div class="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/10 blur-2xl" />
             <div class="relative">
-              <div class="mb-4 flex items-start justify-between gap-3">
-                <div>
+              <div class="mb-4 flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                <div class="min-w-0">
                   <p class="text-xs font-bold text-slate-300">{{ couponScopeText(coupon) }}</p>
-                  <h3 class="mt-1 text-lg font-black text-white">{{ coupon.name }}</h3>
+                  <h3 class="mt-1 break-words text-lg font-black text-white">{{ coupon.name }}</h3>
                 </div>
-                <span class="rounded-full border px-2.5 py-1 text-xs font-bold" :class="couponAvailability(coupon).canUse ? 'border-emerald-300/25 bg-emerald-300/10 text-emerald-100' : 'border-slate-300/15 bg-slate-300/10 text-slate-300'">
+                <span class="w-fit rounded-full border px-2.5 py-1 text-xs font-bold" :class="couponAvailability(coupon).canUse ? 'border-emerald-300/25 bg-emerald-300/10 text-emerald-100' : 'border-slate-300/15 bg-slate-300/10 text-slate-300'">
                   {{ couponAvailability(coupon).label }}
                 </span>
               </div>
-              <p class="text-2xl font-black text-accent">{{ couponDiscountText(coupon) }}</p>
+              <p class="break-words text-2xl font-black text-accent">{{ couponDiscountText(coupon) }}</p>
               <p class="mt-2 text-sm leading-6 text-slate-300">{{ coupon.usageCondition ?? couponAvailability(coupon).reason }}</p>
               <div class="mt-4 grid grid-cols-2 gap-2 text-xs text-slate-400">
                 <span>低消 {{ toNumber(coupon.minimumSpend) > 0 ? money(coupon.minimumSpend) : '無' }}</span>
@@ -366,7 +366,7 @@ onMounted(load)
         <p v-if="unavailableCoupons.length" class="mt-3 text-xs text-slate-500">包含 {{ unavailableCoupons.length }} 張已使用、過期或暫不可用優惠券。</p>
       </section>
 
-      <section class="surface rounded-2xl p-5">
+      <section class="surface min-w-0 rounded-2xl p-4 sm:p-5">
         <h2 class="text-lg font-black text-white">會員任務</h2>
         <div v-if="tasks.length" class="mt-4 grid gap-3 lg:grid-cols-4">
           <article v-for="task in tasks" :key="task.key" class="rounded-2xl border border-white/10 bg-white/[0.035] p-4">
@@ -391,13 +391,13 @@ onMounted(load)
 
       <Teleport to="body">
         <div v-if="selectedReward" class="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 p-4 backdrop-blur-sm" @click.self="selectedReward = null">
-          <section class="animate-scale-in w-full max-w-lg overflow-hidden rounded-[1.5rem] border border-amber-200/20 bg-slate-950/95 p-6 shadow-2xl shadow-black/40">
-            <div class="flex items-start justify-between gap-4">
-              <div>
+          <section class="animate-scale-in max-h-[calc(100dvh-2rem)] w-full max-w-lg overflow-y-auto rounded-[1.5rem] border border-amber-200/20 bg-slate-950/95 p-4 shadow-2xl shadow-black/40 sm:p-6">
+            <div class="flex min-w-0 flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+              <div class="min-w-0">
                 <p class="text-xs font-black text-accent">{{ rewardCategoryLabel(selectedReward) }}</p>
-                <h3 class="mt-2 text-2xl font-black text-white">{{ selectedReward.name }}</h3>
+                <h3 class="mt-2 break-words text-2xl font-black text-white">{{ selectedReward.name }}</h3>
               </div>
-              <button class="btn-secondary" type="button" @click="selectedReward = null">關閉</button>
+              <button class="btn-secondary w-full sm:w-auto" type="button" @click="selectedReward = null">關閉</button>
             </div>
             <p class="mt-4 text-sm leading-6 text-slate-300">{{ selectedReward.description ?? rewardBenefitText(selectedReward) }}</p>
             <div class="mt-5 grid gap-3 sm:grid-cols-2">
@@ -425,10 +425,10 @@ onMounted(load)
         </div>
 
         <div v-if="activeRedemptionQr" class="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 p-4 backdrop-blur-sm" @click.self="activeRedemptionQr = null">
-          <section class="animate-scale-in w-full max-w-md rounded-[1.5rem] border border-sky-200/20 bg-slate-950/95 p-6 text-center shadow-2xl shadow-black/40">
+          <section class="animate-scale-in max-h-[calc(100dvh-2rem)] w-full max-w-md overflow-y-auto rounded-[1.5rem] border border-sky-200/20 bg-slate-950/95 p-4 text-center shadow-2xl shadow-black/40 sm:p-6">
             <p class="text-xs font-black text-sky-100">門市核銷 QR</p>
             <h3 class="mt-2 text-xl font-black text-white">{{ activeRedemptionQr.title }}</h3>
-            <div class="mx-auto mt-5 grid h-64 w-64 place-items-center rounded-3xl border border-white/10 bg-white p-4">
+            <div class="mx-auto mt-5 grid aspect-square w-full max-w-64 place-items-center rounded-3xl border border-white/10 bg-white p-4">
               <img v-if="activeRedemptionQr.image" :src="activeRedemptionQr.image" alt="獎勵核銷 QR Code" class="h-full w-full object-contain" />
               <QrCode v-else class="h-24 w-24 text-slate-400" />
             </div>

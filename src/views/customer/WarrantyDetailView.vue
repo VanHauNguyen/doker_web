@@ -93,16 +93,16 @@ onMounted(load)
         </template>
       </PageHeader>
 
-      <section v-reveal class="overflow-hidden rounded-[1.5rem] border border-emerald-200/20 bg-[radial-gradient(circle_at_20%_0%,rgba(16,185,129,.18),transparent_34%),linear-gradient(135deg,rgba(15,23,42,.96),rgba(9,35,49,.92))] p-6 shadow-2xl shadow-black/30">
-        <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
-          <div>
+      <section v-reveal class="overflow-hidden rounded-[1.5rem] border border-emerald-200/20 bg-[radial-gradient(circle_at_20%_0%,rgba(16,185,129,.18),transparent_34%),linear-gradient(135deg,rgba(15,23,42,.96),rgba(9,35,49,.92))] p-4 shadow-2xl shadow-black/30 sm:p-6">
+        <div class="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+          <div class="min-w-0">
             <p class="text-xs font-black text-emerald-100">DOKER 保固憑證</p>
-            <h1 class="mt-2 text-3xl font-black text-white">{{ sourceTitle }}</h1>
-            <p class="mt-2 text-sm leading-6 text-slate-300">
+            <h1 class="mt-2 break-words text-2xl font-black text-white sm:text-3xl">{{ sourceTitle }}</h1>
+            <p class="mt-2 break-words text-sm leading-6 text-slate-300">
               {{ statusLabel(warranty.type) }} · {{ warranty.startedAt ? dateTime(warranty.startedAt) : '尚未生效' }} - {{ warranty.expiredAt ? dateTime(warranty.expiredAt) : '永久有效' }}
             </p>
           </div>
-          <div class="grid gap-3 sm:grid-cols-3 lg:min-w-[420px]">
+          <div class="grid min-w-0 gap-3 sm:grid-cols-3 lg:min-w-0 lg:max-w-[420px]">
             <div class="rounded-2xl border border-white/10 bg-white/[0.055] p-4">
               <ShieldCheck class="h-5 w-5 text-emerald-100" />
               <p class="mt-3 text-xs text-slate-400">狀態</p>
@@ -122,8 +122,8 @@ onMounted(load)
         </div>
       </section>
 
-      <div class="grid gap-6 xl:grid-cols-[1fr_380px]">
-        <main class="space-y-6">
+      <div class="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
+        <main class="min-w-0 space-y-6">
           <SectionCard v-reveal title="保固生命週期">
             <TimelineRail class="mt-4" :steps="lifecycleSteps" />
           </SectionCard>
@@ -131,12 +131,12 @@ onMounted(load)
           <SectionCard v-reveal title="保固紀錄" subtitle="維修、檢查與更換紀錄由後端保固 log 管理。">
             <div v-if="logs?.length" class="mt-4 space-y-3">
               <article v-for="(log, index) in logs" :key="log.id" class="animate-fade-up rounded-2xl border border-white/10 bg-white/[0.035] p-4" :style="{ animationDelay: `${index * 70}ms` }">
-                <div class="flex items-start justify-between gap-3">
-                  <div>
+                <div class="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div class="min-w-0">
                     <p class="font-black text-white">{{ actionLabel(log.action) }}</p>
-                    <p class="mt-1 text-sm leading-6 text-slate-400">{{ log.note ?? '未填寫備註' }}</p>
+                    <p class="mt-1 break-words text-sm leading-6 text-slate-400">{{ log.note ?? '未填寫備註' }}</p>
                   </div>
-                  <span class="rounded-full border border-sky-200/15 bg-sky-300/10 px-2.5 py-1 text-xs font-bold text-sky-100">{{ dateTime(log.createdAt) }}</span>
+                  <span class="w-fit rounded-full border border-sky-200/15 bg-sky-300/10 px-2.5 py-1 text-xs font-bold text-sky-100">{{ dateTime(log.createdAt) }}</span>
                 </div>
                 <p v-if="log.createdBy" class="mt-2 text-xs text-slate-500">操作人員 {{ log.createdBy }}</p>
               </article>
@@ -195,7 +195,7 @@ onMounted(load)
 
           <SectionCard v-reveal title="QR 憑證">
             <div class="mt-4 rounded-3xl border border-white/10 bg-white p-4">
-              <img v-if="qrDataUrl" :src="qrDataUrl" alt="保固 QR Code" class="mx-auto h-56 w-56 object-contain" />
+              <img v-if="qrDataUrl" :src="qrDataUrl" alt="保固 QR Code" class="mx-auto h-56 w-full max-w-56 object-contain" />
               <div v-else class="grid h-56 place-items-center text-slate-400">
                 <QrCode class="h-16 w-16" />
               </div>

@@ -50,12 +50,12 @@ const submit = async (): Promise<void> => {
 </script>
 
 <template>
-  <form class="animate-scale-in rounded-[1.5rem] border border-white/10 bg-slate-950/50 p-6 shadow-2xl shadow-black/30 backdrop-blur-xl" @submit.prevent="submit">
+  <form class="animate-scale-in w-full max-w-full rounded-[1.5rem] border border-white/10 bg-slate-950/50 p-4 shadow-2xl shadow-black/30 backdrop-blur-xl sm:p-6" @submit.prevent="submit">
     <div class="mb-6">
       <div class="inline-flex items-center gap-2 rounded-full border border-amber-200/20 bg-amber-300/10 px-3 py-1 text-xs font-black text-amber-100">
         <ShieldCheck class="h-4 w-4" /> 會員登入
       </div>
-      <h2 class="mt-4 text-3xl font-black text-white">歡迎回到 DOKER</h2>
+      <h2 class="mt-4 text-2xl font-black text-white sm:text-3xl">歡迎回到 DOKER</h2>
       <p class="mt-2 text-sm leading-6 text-slate-400">登入後同步訂單、保固、點數、優惠券與客服訊息。</p>
     </div>
 
@@ -64,10 +64,10 @@ const submit = async (): Promise<void> => {
       <AuthField v-model="password" label="密碼" type="password" :icon="LockKeyhole" autocomplete="current-password" required :error="touched && password.length < 6 ? '密碼至少 6 碼' : null" />
       <div>
         <label class="mb-2 block text-xs font-black text-slate-300">圖形驗證碼</label>
-        <div class="grid grid-cols-[1fr_auto] gap-2">
+        <div class="grid grid-cols-1 gap-2 sm:grid-cols-[minmax(0,1fr)_auto]">
           <input v-model="captcha" class="field h-12 rounded-2xl bg-slate-950/35" required />
-          <button class="group overflow-hidden rounded-2xl border border-white/10 bg-white" type="button" @click="refreshCaptcha">
-            <img :src="captchaUrl" alt="驗證碼" class="h-12 w-32 object-cover transition group-hover:scale-105" />
+          <button class="group min-w-0 overflow-hidden rounded-2xl border border-white/10 bg-white p-1" type="button" @click="refreshCaptcha">
+            <img :src="captchaUrl" alt="驗證碼" class="h-14 w-full object-contain transition group-hover:scale-105 sm:h-12 sm:w-32" />
           </button>
         </div>
         <button class="mt-2 inline-flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-accent" type="button" @click="refreshCaptcha">
@@ -76,7 +76,7 @@ const submit = async (): Promise<void> => {
       </div>
     </div>
 
-    <div class="mt-4 flex items-center justify-between gap-3 text-sm">
+    <div class="mt-4 flex flex-col gap-3 text-sm sm:flex-row sm:items-center sm:justify-between">
       <label class="inline-flex items-center gap-2 text-slate-300">
         <input v-model="remember" type="checkbox" class="accent-amber-300" /> 記住登入偏好
       </label>

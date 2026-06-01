@@ -94,16 +94,16 @@ onMounted(load)
         </template>
       </PageHeader>
 
-      <section v-reveal class="overflow-hidden rounded-[1.5rem] border border-amber-200/20 bg-[radial-gradient(circle_at_20%_0%,rgba(245,158,11,.22),transparent_35%),linear-gradient(135deg,rgba(15,23,42,.96),rgba(12,30,52,.9))] p-6 shadow-2xl shadow-black/30">
-        <div class="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-end">
-          <div>
+      <section v-reveal class="overflow-hidden rounded-[1.5rem] border border-amber-200/20 bg-[radial-gradient(circle_at_20%_0%,rgba(245,158,11,.22),transparent_35%),linear-gradient(135deg,rgba(15,23,42,.96),rgba(12,30,52,.9))] p-4 shadow-2xl shadow-black/30 sm:p-6">
+        <div class="grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end">
+          <div class="min-w-0">
             <p class="text-xs font-black text-amber-100">訂單狀態</p>
-            <h1 class="mt-2 text-3xl font-black text-white">{{ getOrderTimelineCurrentLabel(order) }}</h1>
-            <p class="mt-2 text-sm leading-6 text-slate-300">
+            <h1 class="mt-2 break-words text-2xl font-black text-white sm:text-3xl">{{ getOrderTimelineCurrentLabel(order) }}</h1>
+            <p class="mt-2 break-words text-sm leading-6 text-slate-300">
               {{ deliveryMethodLabel(order.deliveryMethod) }} · {{ paymentMethodLabel(order.paymentMethod) }} · {{ formatDeliveryDestination(order) }}
             </p>
           </div>
-          <div class="grid gap-3 sm:grid-cols-3 lg:min-w-[420px]">
+          <div class="grid min-w-0 gap-3 sm:grid-cols-3 lg:min-w-0 lg:max-w-[420px]">
             <div class="rounded-2xl border border-white/10 bg-white/[0.055] p-4">
               <WalletCards class="h-5 w-5 text-accent" />
               <p class="mt-3 text-xs text-slate-400">付款</p>
@@ -127,17 +127,17 @@ onMounted(load)
         </div>
       </section>
 
-      <div class="grid gap-6 xl:grid-cols-[1fr_380px]">
-        <main class="space-y-6">
+      <div class="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
+        <main class="min-w-0 space-y-6">
           <SectionCard v-reveal title="訂單生命週期" :subtitle="getOrderTimelineCurrentLabel(order)">
             <TimelineRail class="mt-4" :steps="getOrderTimelineSteps(order)" />
           </SectionCard>
 
           <SectionCard v-reveal title="訂單品項" subtitle="商品、服務、安裝需求與保固關聯。">
             <div class="mt-4 divide-y divide-line">
-              <div v-for="item in order.items" :key="String(item.id)" class="grid gap-3 py-4 md:grid-cols-[1fr_auto] md:items-center">
-                <div>
-                  <p class="font-black text-white">{{ item.name }}</p>
+              <div v-for="item in order.items" :key="String(item.id)" class="grid min-w-0 gap-3 py-4 md:grid-cols-[minmax(0,1fr)_auto] md:items-center">
+                <div class="min-w-0">
+                  <p class="break-words font-black text-white">{{ item.name }}</p>
                   <p class="mt-1 text-sm text-slate-400">{{ item.sku ?? item.productVariant?.sku ?? '未提供 SKU' }} · x{{ item.quantity }}</p>
                   <div class="mt-2 flex flex-wrap gap-2 text-xs text-slate-400">
                     <span v-if="item.itemType" class="rounded-full border border-white/10 bg-white/[0.04] px-2 py-1">{{ statusLabel(item.itemType) }}</span>
@@ -145,7 +145,7 @@ onMounted(load)
                     <span v-if="item.warrantyEligible" class="rounded-full border border-emerald-200/15 bg-emerald-300/10 px-2 py-1 text-emerald-100">保固商品</span>
                   </div>
                 </div>
-                <p class="text-right font-black text-white">{{ money(item.totalPrice) }}</p>
+                <p class="font-black text-white md:text-right">{{ money(item.totalPrice) }}</p>
               </div>
             </div>
           </SectionCard>
@@ -164,7 +164,7 @@ onMounted(load)
           </SectionCard>
 
           <SectionCard v-reveal title="車輛與安裝資料">
-            <div class="mt-4 grid gap-4 md:grid-cols-[220px_1fr]">
+            <div class="mt-4 grid min-w-0 gap-4 md:grid-cols-[220px_minmax(0,1fr)]">
               <div class="group relative h-44 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-slate-800 to-slate-950">
                 <img v-if="vehicleCover" :src="vehicleCover" alt="訂單車輛照片" class="h-full w-full object-cover opacity-0 transition duration-500" @load="($event.target as HTMLElement).classList.remove('opacity-0')" />
                 <div v-else class="grid h-full place-items-center text-center">
@@ -210,12 +210,12 @@ onMounted(load)
 
           <SectionCard v-reveal title="配送與收件">
             <dl class="mt-4 space-y-3 text-sm">
-              <div class="flex justify-between gap-4"><dt class="text-slate-400">方式</dt><dd class="text-right text-white">{{ deliveryMethodLabel(order.deliveryMethod) }}</dd></div>
-              <div class="flex justify-between gap-4"><dt class="text-slate-400">收件人</dt><dd class="text-right text-white">{{ order.recipientName ?? '-' }}</dd></div>
-              <div class="flex justify-between gap-4"><dt class="text-slate-400">電話</dt><dd class="text-right text-white">{{ order.recipientPhone ?? '-' }}</dd></div>
-              <div class="flex justify-between gap-4"><dt class="text-slate-400">地址/門市</dt><dd class="text-right text-white">{{ formatDeliveryDestination(order) }}</dd></div>
-              <div class="flex justify-between gap-4"><dt class="text-slate-400">物流</dt><dd class="text-right text-white">{{ order.logisticsProvider ?? '-' }}</dd></div>
-              <div class="flex justify-between gap-4"><dt class="text-slate-400">追蹤碼</dt><dd class="text-right text-white">{{ order.trackingNumber ?? '-' }}</dd></div>
+              <div class="flex justify-between gap-4"><dt class="shrink-0 text-slate-400">方式</dt><dd class="min-w-0 break-words text-right text-white">{{ deliveryMethodLabel(order.deliveryMethod) }}</dd></div>
+              <div class="flex justify-between gap-4"><dt class="shrink-0 text-slate-400">收件人</dt><dd class="min-w-0 break-words text-right text-white">{{ order.recipientName ?? '-' }}</dd></div>
+              <div class="flex justify-between gap-4"><dt class="shrink-0 text-slate-400">電話</dt><dd class="min-w-0 break-words text-right text-white">{{ order.recipientPhone ?? '-' }}</dd></div>
+              <div class="flex justify-between gap-4"><dt class="shrink-0 text-slate-400">地址/門市</dt><dd class="min-w-0 break-words text-right text-white">{{ formatDeliveryDestination(order) }}</dd></div>
+              <div class="flex justify-between gap-4"><dt class="shrink-0 text-slate-400">物流</dt><dd class="min-w-0 break-words text-right text-white">{{ order.logisticsProvider ?? '-' }}</dd></div>
+              <div class="flex justify-between gap-4"><dt class="shrink-0 text-slate-400">追蹤碼</dt><dd class="min-w-0 break-words text-right text-white">{{ order.trackingNumber ?? '-' }}</dd></div>
             </dl>
           </SectionCard>
 

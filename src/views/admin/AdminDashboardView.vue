@@ -124,14 +124,14 @@ onMounted(load)
 
 <template>
   <div class="space-y-6">
-    <section v-reveal class="relative overflow-hidden rounded-[2rem] border border-line bg-[radial-gradient(circle_at_12%_0%,rgba(210,164,90,.20),transparent_34%),linear-gradient(135deg,rgba(19,32,51,.95),rgba(18,37,59,.88)_58%,rgba(16,27,44,.96))] p-6 shadow-premium">
+    <section v-reveal class="relative overflow-hidden rounded-2xl border border-line bg-[radial-gradient(circle_at_12%_0%,rgba(210,164,90,.20),transparent_34%),linear-gradient(135deg,rgba(19,32,51,.95),rgba(18,37,59,.88)_58%,rgba(16,27,44,.96))] p-4 shadow-premium sm:rounded-[2rem] sm:p-6">
       <div class="absolute right-8 top-8 hidden h-44 w-44 rounded-full bg-sky-300/10 blur-3xl lg:block" />
-      <div class="relative grid gap-6 xl:grid-cols-[1.2fr_.8fr] xl:items-end">
-        <div>
-          <p class="inline-flex rounded-full border border-amber-300/25 bg-amber-300/10 px-4 py-1.5 text-xs font-black tracking-[0.18em] text-amber-100">
+      <div class="relative grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,.8fr)] xl:items-end">
+        <div class="min-w-0">
+          <p class="inline-flex max-w-full rounded-full border border-amber-300/25 bg-amber-300/10 px-3 py-1.5 text-xs font-black tracking-wide text-amber-100 sm:px-4 sm:tracking-[0.18em]">
             EXECUTIVE OPERATIONS
           </p>
-          <h1 class="mt-4 max-w-4xl text-4xl font-black leading-tight text-ink sm:text-5xl">
+          <h1 class="mt-4 max-w-4xl break-words text-3xl font-black leading-tight text-ink sm:text-5xl">
             {{ todayLabel }}營運總覽
           </h1>
           <p class="mt-4 max-w-3xl text-base leading-7 text-slate-500">
@@ -169,7 +169,7 @@ onMounted(load)
         <KpiCard label="客服用戶" :value="supportUsers.length" :icon="MessageCircle" tone="blue" />
       </div>
 
-      <div class="grid gap-6 xl:grid-cols-[1.15fr_.85fr]">
+      <div class="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1.15fr)_minmax(0,.85fr)]">
         <SectionCard v-reveal title="營運管線" subtitle="依據真實訂單狀態從待處理到完成聚合。">
           <div class="space-y-4">
             <div v-for="item in pipeline" :key="item.status" class="rounded-xl border border-line bg-white/[0.07] p-4">
@@ -205,7 +205,7 @@ onMounted(load)
         </SectionCard>
       </div>
 
-      <div class="grid gap-6 xl:grid-cols-[1.2fr_.8fr]">
+      <div class="grid min-w-0 gap-6 xl:grid-cols-[minmax(0,1.2fr)_minmax(0,.8fr)]">
         <SectionCard v-reveal title="近期訂單" subtitle="最新訂單、會員、付款與履約狀態。">
           <AdminTable :columns="['單號', '會員', '狀態', '履約', '金額', '建立時間']">
             <tr v-for="order in orders.slice(0, 8)" :key="order.id" class="table-row">
